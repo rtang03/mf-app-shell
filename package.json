@@ -8,7 +8,6 @@
     "serve": "lerna run --scope @nextjs-sidecar/* --parallel serve",
     "clean": "lerna run --scope @nextjs-sidecar/* --parallel clean",
     "lint": "eslint . --ext ts --ext tsx --ext js",
-    "format": "prettier --write .",
     "type-check": "tsc --pretty --noEmit"
   },
   "husky": {
@@ -19,8 +18,7 @@
   },
   "lint-staged": {
     "*.@(ts|tsx)": [
-      "yarn lint",
-      "yarn format"
+      "yarn lint"
     ]
   },
   "devDependencies": {
