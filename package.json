@@ -9,6 +9,18 @@
     "clean": "lerna run --scope @basic-host-remote/* --parallel clean"
   },
   "devDependencies": {
-    "lerna": "^3.22.1"
+    "lerna": "^3.22.1",
+    "prettier": "^2.2.1"
+  },
+  "prettier": {
+    "eslintIntegration": true,
+    "semi": true,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "bracketSpacing": true,
+    "jsxBracketSameLine": true,
+    "requirePragma": false,
+    "insertPragma": false,
+    "printWidth": 100
   }
 }

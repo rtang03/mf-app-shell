@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
 
 const Dog = () => {
   return (
     <div>
       <h1>Look at this dog from App One!</h1>
-      <img src="http://place-puppy.com/400x400" />
+      <img src="http://place-puppy.com/400x400" alt={undefined} />
     </div>
   );
 };

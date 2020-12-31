@@ -1,9 +1,12 @@
-import Head from "next/head";
-import Link from "next/link";
-import GreetingAppOne from "../components/GreetingAppOne";
-import React from "react";
+import Head from 'next/head';
+import Link from 'next/link';
+import GreetingAppOne from '../components/GreetingAppOne';
+import React from 'react';
+import { NewGlobal } from '../global';
 
-const useDynamicScript = (url) => {
+declare const global: NewGlobal;
+
+const useDynamicScript = (url: string) => {
   const [ready, setReady] = React.useState(false);
   const [failed, setFailed] = React.useState(false);
 
@@ -12,9 +15,9 @@ const useDynamicScript = (url) => {
       return;
     }
 
-    const element = document.createElement("script");
+    const element = document.createElement('script');
     element.src = url;
-    element.type = "text/javascript";
+    element.type = 'text/javascript';
     element.async = true;
 
     setReady(false);
@@ -50,15 +53,15 @@ const RemoteComponent = ({
   module,
   fallback = <div>Loading...</div>,
   ...props
+}: {
+  scope: keyof NewGlobal;
+  module: string;
+  fallback?: React.ReactFragment;
 }) => {
-  const { ready, failed } = useDynamicScript(
-    "http://localhost:8082/remoteEntry.js"
-  );
+  const { ready, failed } = useDynamicScript('http://localhost:8082/remoteEntry.js');
 
   if (!scope || !module) {
-    throw new Error(
-      "You must specify scope and module to import a Remote Component"
-    );
+    throw new Error('You must specify scope and module to import a Remote Component');
   }
 
   if (!ready || failed || !global) {
@@ -69,7 +72,7 @@ const RemoteComponent = ({
     Object.assign(
       {
         react: {
-          get: () => Promise.resolve(() => require("react")),
+          get: () => Promise.resolve(() => require('react')),
           loaded: true,
         },
       },
@@ -78,7 +81,7 @@ const RemoteComponent = ({
   );
 
   const Component = React.lazy(() =>
-    global[scope].get(module).then((factory) => factory())
+    global[scope].get(module).then((factory: Function) => factory())
   );
 
   return (
@@ -105,10 +108,8 @@ export default function Home() {
         <a
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
           target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{" "}
-          <img src="/vercel.svg" alt="Vercel Logo" className="logo" />
+          rel="noopener noreferrer">
+          Powered by <img src="/vercel.svg" alt="Vercel Logo" className="logo" />
         </a>
       </footer>
 
@@ -186,9 +187,8 @@ export default function Home() {
         body {
           padding: 0;
           margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-            sans-serif;
+          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu,
+            Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
         }
 
         * {
