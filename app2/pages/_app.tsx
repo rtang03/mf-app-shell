@@ -1,7 +1,10 @@
 import Head from 'next/head';
 import React from 'react';
 
-export default function MyApp({ Component, pageProps }: { Component: React.FC; pageProps: any }) {
+const MyApp: (option: { Component: React.FC; pageProps: any }) => JSX.Element = ({
+  Component,
+  pageProps,
+}) => {
   return (
     <>
       <Head>
@@ -13,4 +16,6 @@ export default function MyApp({ Component, pageProps }: { Component: React.FC; p
       <Component {...pageProps} />
     </>
   );
-}
+};
+
+export default MyApp;

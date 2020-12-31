@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Dog = () => {
+const Dog: () => JSX.Element = () => {
   return (
     <div>
       <h1>Look at this dog from App One!</h1>

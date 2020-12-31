@@ -1,7 +1,6 @@
-import Head from 'next/head';
 import GreetingAppTwo from '../components/GreetingAppTwo';
 
-export default function Home() {
+const Home: () => JSX.Element = () => {
   return (
     <div className="container">
       <main>
@@ -104,4 +103,6 @@ export default function Home() {
       `}</style>
     </div>
   );
-}
+};
+
+export default Home;

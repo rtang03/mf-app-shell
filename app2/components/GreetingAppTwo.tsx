@@ -1,6 +1,8 @@
-import React from "react";
+import React from 'react';
 
-const GreetingAppTwo = ({ greeting = "Hello 👋🏼 from App Two" }) => {
+const GreetingAppTwo: (option: { greeting?: string }) => JSX.Element = ({
+  greeting = 'Hello 👋🏼 from App Two',
+}) => {
   return (
     <p className="description">
       {greeting}

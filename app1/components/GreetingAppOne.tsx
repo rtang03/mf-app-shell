@@ -1,6 +1,6 @@
 import React from 'react';
 
-const GreetingAppOne = () => {
+const GreetingAppOne: () => JSX.Element = () => {
   return (
     <p className="description">
       Hello 👋🏼 from App One

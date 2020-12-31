@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import Link from 'next/link';
 import GreetingAppOne from '../components/GreetingAppOne';
 import React from 'react';
@@ -81,7 +80,7 @@ const RemoteComponent = ({
   );
 
   const Component = React.lazy(() =>
-    global[scope].get(module).then((factory: Function) => factory())
+    global[scope].get(module).then((factory: () => void) => factory())
   );
 
   return (
@@ -91,7 +90,7 @@ const RemoteComponent = ({
   );
 };
 
-export default function Home() {
+export default function Home(): JSX.Element {
   return (
     <div className="container">
       <main>
