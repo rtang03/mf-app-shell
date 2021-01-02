@@ -1,5 +1,5 @@
-const { ModuleFederationPlugin } = require('webpack').container;
 const path = require('path');
+const { ModuleFederationPlugin } = require('webpack').container;
 const { dependencies } = require('./package.json');
 
 module.exports = {

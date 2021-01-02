@@ -1,0 +1,36 @@
+version: '2'
+
+networks:
+  openplatform:
+
+services:
+  gw-org2:
+    image: $GW2_IMAGE
+    container_name: gw-org2
+    environment:
+      - CONNECTION_PROFILE=/home/app/packages/gw-org2/connection/connection-org2.docker.yaml
+      - AUTHORIZATION_SERVER_URI=http://auth-server2:8080/oauth/authenticate
+      - CA_ENROLLMENT_ID_ADMIN=rca-org2-admin
+      - CA_ENROLLMENT_SECRET_ADMIN=rca-org2-adminPW
+      - CA_NAME=rca-org2
+      - ORG_CA_URL=https://rca-org2:5055
+      - ORG_ADMIN_ID=admin-org2.net
+      - ORG_ADMIN_SECRET=admin-org2.netPW
+      - GATEWAY_HOST=gw-org2
+      - REDIS_HOST=redis02
+      - QUERY_PORT=5002
+      - REMOTE_URI=http://gw-org1:4001/graphql\ http://gw-org3:4001/graphql
+    working_dir: /home/app/packages/gw-org2
+    ports:
+      - 4002:4001
+      - 5002:5002
+    networks:
+      - openplatform
+    depends_on:
+      - auth-server2
+      - orderer0-org0
+      - peer0-org2
+    volumes:
+      - $VOLUME/gw-org2/assets/:/home/app/packages/gw-org2/assets/
+      - $VOLUME/gw-org2/logs/:/home/app/packages/gw-org2/logs/
+      - $ARTIFACTS/crypto-config/:/var/artifacts/crypto-config/
