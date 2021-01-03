@@ -10,7 +10,6 @@ import {
 } from '../types';
 import {
   catchErrors,
-  getLogger,
   isLoginResponse,
   isRefreshTokenResponse,
   isRegisterResponse,
@@ -30,7 +29,6 @@ const initConfig = {
 
 // TODO: need fix secure
 const cookieOption = { httpOnly: true, secure: false, sameSite: true, path: '/control' };
-const logger = getLogger({ name: '[ui-control] schema.js' });
 
 export const resolvers = {
   Query: {
@@ -38,8 +36,6 @@ export const resolvers = {
     // me returns the userinfo from an authtenticated request
     me: catchErrors<User>(
       (_: any, ctx) => {
-        logger.debug('me is called');
-
         if (!ctx?.accessToken) return Promise.reject(new Error('No access token'));
 
         return fetch(`${ctx.authUri}/account/userinfo`, {
@@ -56,7 +52,7 @@ export const resolvers = {
   Mutation: {
     refreshToken: catchErrors<RefreshTokenResponse>(
       (_, { authUri, refreshToken }) => {
-        logger.debug(`refreshToken is called: ${refreshToken}`);
+        // console.debug(`refreshToken is called: ${refreshToken}`);
 
         if (!refreshToken) return Promise.reject(new Error('No refresh token'));
 
@@ -75,7 +71,7 @@ export const resolvers = {
         fcnName: 'refreshToken',
         typeGuard: isRefreshTokenResponse,
         onSuccess: ({ refresh_token }, headers, { res, refreshToken: oldrt }) => {
-          logger.debug(`old refreshToken: ${oldrt} is expired`);
+          console.debug(`old refreshToken: ${oldrt} is expired`);
 
           // accessToken expiry is currently not used. Still, add to res, and returning to client, for future use
           // the alternative implementation may later add a countdown timer, to renew the accessToken automatically

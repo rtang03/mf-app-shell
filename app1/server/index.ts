@@ -10,7 +10,7 @@ import errorHandler from 'errorhandler';
 import express from 'express';
 import httpStatus from 'http-status';
 import next from 'next';
-import type { ApolloContext } from '../types';
+import { ApolloContext } from '../types';
 import { schema } from './schema';
 
 const authUri = process.env.AUTH_HOST as string;
@@ -39,7 +39,7 @@ app
       process.exit(1);
     }
 
-    console.debug(util.format('Env - $AUTH_HOST: %s', authUri));
+    console.debug(util.format('Env - AUTH_HOST: %s', authUri));
 
     const server = express();
     server.use(cookieParser());
