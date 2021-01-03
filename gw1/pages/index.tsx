@@ -1,6 +1,7 @@
+import { NextPage } from 'next';
 import GreetingAppTwo from '../components/GreetingAppTwo';
 
-const Home: () => JSX.Element = () => {
+const Home: NextPage<null> = () => {
   return (
     <div className="container">
       <main>
