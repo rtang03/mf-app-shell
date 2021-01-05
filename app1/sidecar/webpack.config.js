@@ -10,7 +10,7 @@ module.exports = {
     port: 8081,
   },
   output: {
-    publicPath: 'http://localhost:8081/',
+    publicPath: 'http://localhost:8181/',
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', 'jsx'],

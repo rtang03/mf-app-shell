@@ -22,7 +22,7 @@ const Index: NextPage<undefined> = () => {
       </ol>
 
       <div>
-        <RemoteComponent scope="app2" module="./GreetingAppTwo" />
+        <RemoteComponent scope="gw1" module="./GreetingAppTwo" />
       </div>
       <style jsx>{`
         li {

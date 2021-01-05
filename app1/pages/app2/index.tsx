@@ -100,7 +100,7 @@ export default function Home(): JSX.Element {
           </Link>
         </h1>
         {/*<GreetingAppOne />*/}
-        <RemoteComponent scope="app2" module="./GreetingAppTwo" />
+        {/*<RemoteComponent scope="gw1" module="./GreetingAppTwo" />*/}
       </main>
 
       <footer>

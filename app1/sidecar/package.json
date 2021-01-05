@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "build": "webpack --mode development",
-    "start": "cd dist && PORT=8081 npx servor"
+    "start": "cd dist && PORT=8181 npx servor"
   },
   "devDependencies": {
     "@babel/core": "7.12.10",
