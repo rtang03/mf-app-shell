@@ -6,7 +6,7 @@ const GreetingAppTwo: (option: { greeting?: string }) => JSX.Element = ({
   return (
     <p className="description">
       {greeting}
-      <style jsx>{`
+      <style jsx='true'>{`
         .description {
           color: #234e52;
           background-color: #e6fffa;

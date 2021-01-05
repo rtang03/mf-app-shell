@@ -11,12 +11,18 @@
     "format": "prettier --write .",
     "lint": "eslint . --ext ts --ext tsx --ext js",
     "test": "jest",
-    "test-all": "yarn lint && yarn type-check && yarn test"
+    "test-all": "yarn lint && yarn type-check && yarn test",
+    "gen-hook:qh": "graphql-codegen --config graphql/generated/queryHandler.codegen.yml"
   },
   "dependencies": {
+    "@apollo/client": "^3.3.6",
+    "@material-ui/core": "^4.11.2",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.57",
     "dotenv": "^8.2.0",
     "errorhandler": "^1.5.1",
     "express": "^4.17.1",
+    "graphql": "^15.4.0",
     "lodash": "^4.17.20",
     "next": "10.0.4",
     "react": "17.0.1",
@@ -24,10 +30,18 @@
     "rimraf": "^3.0.2"
   },
   "devDependencies": {
+    "@graphql-codegen/add": "^2.0.2",
+    "@graphql-codegen/cli": "^1.20.0",
+    "@graphql-codegen/introspection": "^1.18.1",
+    "@graphql-codegen/typescript": "^1.20.0",
+    "@graphql-codegen/typescript-operations": "^1.17.13",
+    "@graphql-codegen/typescript-react-apollo": "^2.2.1",
+    "@graphql-codegen/typescript-resolvers": "^1.18.1",
     "@types/body-parser": "^1.19.0",
     "@types/dotenv": "^8.2.0",
     "@types/errorhandler": "^1.5.0",
     "@types/express": "^4.17.9",
+    "@types/lodash": "^4.14.167",
     "@testing-library/react": "^11.2.2",
     "@types/jest": "^26.0.19",
     "@types/node": "^14.14.17",
@@ -42,6 +56,7 @@
     "jest": "^26.6.3",
     "jest-watch-typeahead": "^0.6.1",
     "nodemon": "^2.0.6",
+    "prettier": "~2.2.1",
     "ts-node": "^9.1.1",
     "typescript": "^4.1.3"
   }

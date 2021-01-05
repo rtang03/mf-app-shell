@@ -3,7 +3,7 @@ const { ModuleFederationPlugin } = require('webpack').container;
 const { dependencies } = require('./package.json');
 
 module.exports = {
-  entry: './src/index',
+  entry: path.resolve(__dirname, 'src', 'index.tsx'),
   mode: 'development',
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
@@ -12,14 +12,17 @@ module.exports = {
   output: {
     publicPath: 'http://localhost:8081/',
   },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js', 'jsx'],
+  },
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.tsx?$/,
         loader: 'babel-loader',
         exclude: /node_modules/,
         options: {
-          presets: ['@babel/preset-react'],
+          presets: ['@babel/preset-react', '@babel/preset-typescript'],
         },
       },
     ],
@@ -29,7 +32,7 @@ module.exports = {
       name: 'app1',
       filename: 'remoteEntry.js',
       remotes: {
-        app2: 'app2',
+        gw1: 'gw1',
       },
       exposes: {
         './GreetingAppOne': '../components/GreetingAppOne',

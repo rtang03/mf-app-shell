@@ -2,8 +2,9 @@ import Typography from '@material-ui/core/Typography';
 import Layout from 'components/Layout';
 import { NextPage } from 'next';
 import React from 'react';
+import RemoteComponent from '../components/RemoteComponent';
 
-const Index: NextPage<any> = () => {
+const Index: NextPage<undefined> = () => {
   return (
     <Layout title="Home">
       <Typography variant="h6">Control Panel</Typography>
@@ -19,6 +20,10 @@ const Index: NextPage<any> = () => {
           Click logout and try to go to profile again. You&apos;ll get redirected to the `/login` route.
         </li>
       </ol>
+
+      <div>
+        <RemoteComponent scope="app2" module="./GreetingAppTwo" />
+      </div>
       <style jsx>{`
         li {
           margin-bottom: 0.5rem;

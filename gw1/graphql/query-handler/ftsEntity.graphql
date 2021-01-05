@@ -1,5 +1,5 @@
 query FTSEntity (
-    $query: String
+    $query: String!
     $cursor: Int
     $pagesize: Int
    ) {

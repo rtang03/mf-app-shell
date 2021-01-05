@@ -99,7 +99,7 @@ export default function Home(): JSX.Element {
             <a>The dog page 👉</a>
           </Link>
         </h1>
-        <GreetingAppOne />
+        {/*<GreetingAppOne />*/}
         <RemoteComponent scope="app2" module="./GreetingAppTwo" />
       </main>
 

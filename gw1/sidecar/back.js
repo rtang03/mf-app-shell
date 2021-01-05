@@ -29,15 +29,24 @@ module.exports = {
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: 'gw1',
+      name: 'app2',
       filename: 'remoteEntry.js',
       remotes: {
         app1: 'app1',
       },
       exposes: {
         './GreetingAppTwo': '../components/GreetingAppTwo',
+        './Metrics': '../components/Metrics',
       },
-      shared: dependencies,
+      shared: [
+        {
+          ...dependencies,
+          react: { singleton: true, requiredVersion: dependencies.react },
+          'react-dom': { singleton: true, requiredVersion: dependencies['react-dom'] },
+          'graphql/generated/queryHandler': '../graphql/generated/queryHandler',
+          '../utils': '../utils',
+        },
+      ],
     }),
   ],
 };
