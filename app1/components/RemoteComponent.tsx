@@ -1,5 +1,6 @@
 import { NewGlobal } from 'global';
 import React from 'react';
+import { dependencies } from "../package.json";
 
 declare const global: NewGlobal;
 
@@ -65,17 +66,25 @@ const RemoteComponent = ({
     return null;
   }
 
-  global[scope].init(
-    Object.assign(
-      {
-        react: {
-          get: () => Promise.resolve(() => require('react')),
-          loaded: true,
-        },
+  global[scope].init({
+    react: {
+      [dependencies.react]: {
+        get: () => Promise.resolve().then(() => () => require('react')),
       },
-      global.__webpack_require__ ? global.__webpack_require__.o : {}
-    )
-  );
+    },
+  });
+
+  // global[scope].init(
+  //   Object.assign(
+  //     {
+  //       react: {
+  //         get: () => Promise.resolve(() => require('react')),
+  //         // loaded: true,
+  //       },
+  //     },
+  //     global.__webpack_require__ ? global.__webpack_require__.o : {}
+  //   )
+  // );
 
   const Component = React.lazy(() =>
     global[scope].get(module).then((factory: () => void) => factory())

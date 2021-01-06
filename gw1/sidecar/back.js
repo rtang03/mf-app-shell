@@ -44,7 +44,6 @@ module.exports = {
           react: { singleton: true, requiredVersion: dependencies.react },
           'react-dom': { singleton: true, requiredVersion: dependencies['react-dom'] },
           'graphql/generated/queryHandler': '../graphql/generated/queryHandler',
-          '../utils': '../utils',
         },
       ],
     }),

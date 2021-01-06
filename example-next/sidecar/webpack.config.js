@@ -3,39 +3,36 @@ const { ModuleFederationPlugin } = require('webpack').container;
 const { dependencies } = require('./package.json');
 
 module.exports = {
-  entry: path.resolve(__dirname, 'src', 'index.tsx'),
+  entry: './src/index',
   mode: 'development',
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
-    port: 8081,
+    port: 8082,
   },
   output: {
-    publicPath: 'http://localhost:8181/',
-  },
-  resolve: {
-    extensions: ['.tsx', '.ts', '.js', 'jsx'],
+    publicPath: 'http://localhost:8082/',
   },
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.jsx?$/,
         loader: 'babel-loader',
         exclude: /node_modules/,
         options: {
-          presets: ['@babel/preset-react', '@babel/preset-typescript'],
+          presets: ['@babel/preset-react'],
         },
       },
     ],
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: 'app1',
+      name: 'example-next',
       filename: 'remoteEntry.js',
-      // remotes: {
-      //   gw1: 'gw1@http://localhost:8082/remoteEntry.js',
-      // },
+      remotes: {
+        app1: 'app1',
+      },
       exposes: {
-        './GreetingAppOne': '../components/GreetingAppOne',
+        './Button': '../components/Button',
       },
       shared: dependencies,
     }),

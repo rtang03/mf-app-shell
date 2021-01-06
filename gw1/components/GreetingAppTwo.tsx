@@ -1,8 +1,14 @@
 import React from 'react';
+import { useGetEntityInfoQuery } from '../graphql/generated/queryHandler';
 
 const GreetingAppTwo: (option: { greeting?: string }) => JSX.Element = ({
   greeting = 'Hello 👋🏼 from App Two',
 }) => {
+  const { data, loading, error } = useGetEntityInfoQuery({
+    context: { backend: 'queryHandler' },
+    fetchPolicy: 'cache-and-network',
+  });
+
   return (
     <p className="description">
       {greeting}

@@ -17,12 +17,13 @@ const Index: NextPage<undefined> = () => {
           stored.
         </li>
         <li>
-          Click logout and try to go to profile again. You&apos;ll get redirected to the `/login` route.
+          Click logout and try to go to profile again. You&apos;ll get redirected to the `/login`
+          route.
         </li>
       </ol>
 
       <div>
-        <RemoteComponent scope="gw1" module="./GreetingAppTwo" />
+        <RemoteComponent scope="gw1" module="./Gateway" />
       </div>
       <style jsx>{`
         li {

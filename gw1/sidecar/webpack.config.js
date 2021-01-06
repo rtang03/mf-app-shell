@@ -7,6 +7,7 @@ module.exports = {
   mode: 'development',
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
+    host: '0.0.0.0',
     port: 8082,
   },
   output: {
@@ -35,9 +36,12 @@ module.exports = {
         app1: 'app1',
       },
       exposes: {
-        './GreetingAppTwo': '../components/GreetingAppTwo',
+        // './GreetingAppTwo': '../components/GreetingAppTwo',
+        './Gateway': '../components/Gateway',
       },
-      shared: dependencies,
+      shared: {
+        ...dependencies,
+      },
     }),
   ],
 };
