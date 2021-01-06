@@ -74,18 +74,6 @@ const RemoteComponent = ({
     },
   });
 
-  // global[scope].init(
-  //   Object.assign(
-  //     {
-  //       react: {
-  //         get: () => Promise.resolve(() => require('react')),
-  //         // loaded: true,
-  //       },
-  //     },
-  //     global.__webpack_require__ ? global.__webpack_require__.o : {}
-  //   )
-  // );
-
   const Component = React.lazy(() =>
     global[scope].get(module).then((factory: () => void) => factory())
   );

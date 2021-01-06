@@ -23,7 +23,7 @@ const Index: NextPage<undefined> = () => {
       </ol>
 
       <div>
-        <RemoteComponent scope="gw1" module="./Gateway" />
+        <RemoteComponent scope="example_react" module="./Button" />
       </div>
       <style jsx>{`
         li {
