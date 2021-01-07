@@ -1,17 +1,16 @@
+import { ApolloClient } from '@apollo/client';
 import { NewGlobal } from 'global';
-import React from 'react';
-import { dependencies } from "../package.json";
+import React, { lazy, Suspense, useState } from 'react';
+import { dependencies } from '../package.json';
 
 declare const global: NewGlobal;
 
 const useDynamicScript = (url: string) => {
-  const [ready, setReady] = React.useState(false);
-  const [failed, setFailed] = React.useState(false);
+  const [ready, setReady] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   React.useEffect(() => {
-    if (!url) {
-      return;
-    }
+    if (!url) return;
 
     const element = document.createElement('script');
     element.src = url;
@@ -47,24 +46,24 @@ const useDynamicScript = (url: string) => {
 };
 
 const RemoteComponent = ({
+  url,
   scope,
   module,
   fallback = <div>Loading...</div>,
   ...props
 }: {
+  url: string;
   scope: keyof NewGlobal;
   module: string;
   fallback?: React.ReactFragment;
+  apolloClient?: ApolloClient<any>;
 }) => {
-  const { ready, failed } = useDynamicScript('http://localhost:8082/remoteEntry.js');
+  const { ready, failed } = useDynamicScript(url);
 
-  if (!scope || !module) {
+  if (!scope || !module)
     throw new Error('You must specify scope and module to import a Remote Component');
-  }
 
-  if (!ready || failed || !global) {
-    return null;
-  }
+  if (!ready || failed || !global) return null;
 
   global[scope].init({
     react: {
@@ -74,14 +73,12 @@ const RemoteComponent = ({
     },
   });
 
-  const Component = React.lazy(() =>
-    global[scope].get(module).then((factory: () => void) => factory())
-  );
+  const Component = lazy(() => global[scope].get(module).then((factory: () => void) => factory()));
 
   return (
-    <React.Suspense fallback={fallback}>
+    <Suspense fallback={fallback}>
       <Component {...props} />
-    </React.Suspense>
+    </Suspense>
   );
 };
 

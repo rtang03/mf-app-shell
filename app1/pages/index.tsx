@@ -3,8 +3,12 @@ import Layout from 'components/Layout';
 import { NextPage } from 'next';
 import React from 'react';
 import RemoteComponent from '../components/RemoteComponent';
+import { useApollo } from '../utils';
 
-const Index: NextPage<undefined> = () => {
+const Index: NextPage<any> = (props) => {
+  const apolloClient = useApollo(props.initialApolloState);
+  const url = process.env.NEXT_PUBLIC_MF_GATEWAY || '';
+
   return (
     <Layout title="Home">
       <Typography variant="h6">Control Panel</Typography>
@@ -23,7 +27,7 @@ const Index: NextPage<undefined> = () => {
       </ol>
 
       <div>
-        <RemoteComponent scope="example_react" module="./Button" />
+        <RemoteComponent url={url} scope="gateway" module="./Gateway" apolloClient={apolloClient} />
       </div>
       <style jsx>{`
         li {

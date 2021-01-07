@@ -39,7 +39,7 @@ app
       process.exit(1);
     }
 
-    console.debug(util.format('Env - AUTH_HOST: %s', authUri));
+    console.debug(`Env - AUTH_HOST: ${authUri}`);
 
     const server = express();
     server.use(cookieParser());

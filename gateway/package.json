@@ -12,6 +12,7 @@
     "lint": "eslint . --ext ts --ext tsx --ext js",
     "test": "jest",
     "test-all": "yarn lint && yarn type-check && yarn test",
+    "gen-hook:ui": "graphql-codegen --config graphql/generated/ui.codegen.yml",
     "gen-hook:qh": "graphql-codegen --config graphql/generated/queryHandler.codegen.yml"
   },
   "dependencies": {

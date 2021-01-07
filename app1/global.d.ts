@@ -7,6 +7,6 @@ export interface App {
 export interface NewGlobal extends Global {
   'example_react': App;
   'example_next': App;
-  'gw1': App;
+  'gateway': App;
   __webpack_require__: { o: any };
 }

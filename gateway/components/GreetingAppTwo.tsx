@@ -1,18 +1,16 @@
 import React from 'react';
-import { useGetEntityInfoQuery } from '../graphql/generated/queryHandler';
+import { useMeQuery } from '../graphql/generated/ui-control';
 
 const GreetingAppTwo: (option: { greeting?: string }) => JSX.Element = ({
   greeting = 'Hello 👋🏼 from App Two',
 }) => {
-  const { data, loading, error } = useGetEntityInfoQuery({
-    context: { backend: 'queryHandler' },
-    fetchPolicy: 'cache-and-network',
-  });
+  const { data, error, loading } = useMeQuery();
+  console.log(error);
 
   return (
     <p className="description">
       {greeting}
-      <style jsx='true'>{`
+      <style jsx="true">{`
         .description {
           color: #234e52;
           background-color: #e6fffa;
