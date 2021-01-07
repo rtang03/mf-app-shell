@@ -36,7 +36,7 @@ export const resolvers = {
     // me returns the userinfo from an authtenticated request
     me: catchErrors<User>(
       (_: any, ctx) => {
-        // if (!ctx?.accessToken) return Promise.reject(new Error('No access token'));
+        if (!ctx?.accessToken) return Promise.reject(new Error('No access token'));
 
         return fetch(`${ctx.authUri}/account/userinfo`, {
           headers: {

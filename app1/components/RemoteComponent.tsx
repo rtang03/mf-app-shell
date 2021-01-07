@@ -57,6 +57,7 @@ const RemoteComponent = ({
   module: string;
   fallback?: React.ReactFragment;
   apolloClient?: ApolloClient<any>;
+  token?: any;
 }) => {
   const { ready, failed } = useDynamicScript(url);
 

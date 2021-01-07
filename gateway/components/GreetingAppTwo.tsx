@@ -5,6 +5,7 @@ const GreetingAppTwo: (option: { greeting?: string }) => JSX.Element = ({
   greeting = 'Hello 👋🏼 from App Two',
 }) => {
   const { data, error, loading } = useMeQuery();
+  console.log(data);
   console.log(error);
 
   return (
