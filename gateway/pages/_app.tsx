@@ -1,19 +1,15 @@
+import { ApolloProvider } from '@apollo/client';
 import { NextPage } from 'next';
-import Head from 'next/head';
 import React from 'react';
+import { useApollo } from '../utils';
 
 const App: NextPage<any> = ({ Component, pageProps }) => {
+  const apolloClient = useApollo(pageProps.initialApolloState);
 
   return (
-    <>
-      <Head>
-        {/* Load our own module and the other app module */}
-        {/*<script src="http://localhost:8081/remoteEntry.js" />*/}
-        <script src="http://localhost:8082/remoteEntry.js" />
-        <title>No title</title>
-      </Head>
+    <ApolloProvider client={apolloClient}>
       <Component {...pageProps} />
-    </>
+    </ApolloProvider>
   );
 };
 

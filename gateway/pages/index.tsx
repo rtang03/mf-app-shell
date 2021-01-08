@@ -1,11 +1,15 @@
+import Typography from '@material-ui/core/Typography';
+import Layout from 'components/Layout';
 import { NextPage } from 'next';
 import React from 'react';
 
-const Index: NextPage<undefined> = () => {
+const Index: NextPage<null> = () => {
   return (
-    <div>
-      Hello
-    </div>
+    <Layout title="Gateway">
+      <ol>
+        <li>Dashboard</li>
+      </ol>
+    </Layout>
   );
 };
 

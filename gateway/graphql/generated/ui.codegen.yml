@@ -6,7 +6,7 @@ hooks:
 generates:
   graphql/generated/ui-control.tsx:
     documents: 'graphql/ui-control/*.graphql'
-    schema: 'http://localhost:3000/control/api/graphql'
+    schema: 'http://localhost:3101/control/api/graphql'
     plugins:
       - 'typescript'
       - 'typescript-operations'

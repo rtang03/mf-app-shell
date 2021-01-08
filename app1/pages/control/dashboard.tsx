@@ -11,17 +11,14 @@ const Dashboard: NextPage<any> = (props) => {
   const apolloClient = useApollo(props?.initialApolloState);
   const url = process.env.NEXT_PUBLIC_MF_GATEWAY || '';
 
-  if (!data?.me)
-    return (
-      <Layout title="Dashboard" loading={loading} user={null} restricted={false}>
-        {error?.message}
-      </Layout>
-    );
-
-  return (
+  return !data?.me ? (
+    <Layout title="Dashboard" loading={loading} user={null} restricted={false}>
+      {error?.message}
+    </Layout>
+  ) : (
     <Layout title="Dashboard" loading={loading} user={data?.me} restricted={true}>
       <div>
-        <RemoteComponent url={url} scope="gateway" module="./Gateway" apolloClient={apolloClient} />
+        <RemoteComponent url={url} scope="gateway" module="./Dashboard" apolloClient={apolloClient} />
       </div>
     </Layout>
   );

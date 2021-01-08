@@ -1,12 +1,10 @@
 import React from 'react';
-import { useMeQuery } from '../graphql/generated/ui-control';
+// import { useMeQuery } from '../graphql/generated/ui-control';
 
 const GreetingAppTwo: (option: { greeting?: string }) => JSX.Element = ({
   greeting = 'Hello 👋🏼 from App Two',
 }) => {
-  const { data, error, loading } = useMeQuery();
-  console.log(data);
-  console.log(error);
+  // const { data, error, loading } = useMeQuery();
 
   return (
     <p className="description">

@@ -1,15 +1,15 @@
 import { ApolloProvider, ApolloClient } from '@apollo/client';
 import React from 'react';
-import GreetingAppTwo from './GreetingAppTwo';
+import Dashboard from './Dashboard';
 
-const Gateway = ({
+const ExportedDashboard = ({
   apolloClient,
 }: JSX.IntrinsicAttributes & { children: JSX.Element; apolloClient: ApolloClient<any> }) => {
   return (
     <ApolloProvider client={apolloClient}>
-      <GreetingAppTwo />
+      <Dashboard />
     </ApolloProvider>
   );
 };
 
-export default Gateway;
+export default ExportedDashboard;

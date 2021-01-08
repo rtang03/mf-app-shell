@@ -2,9 +2,8 @@ import Typography from '@material-ui/core/Typography';
 import Layout from 'components/Layout';
 import { NextPage } from 'next';
 import React from 'react';
-import { useApollo } from '../utils';
 
-const Index: NextPage<any> = () => {
+const Index: NextPage<null> = () => {
   return (
     <Layout title="Home">
       <Typography variant="h6">Control Panel</Typography>
