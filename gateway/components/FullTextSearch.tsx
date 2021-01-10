@@ -2,9 +2,9 @@ import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Pagination from '@material-ui/lab/Pagination';
 import { Form, Formik } from 'formik';
-import { useFtsCommitLazyQuery, useFtsEntityLazyQuery } from 'graphql/generated/queryHandler';
 import React from 'react';
-import { useStyles } from 'utils';
+import { useFtsCommitLazyQuery, useFtsEntityLazyQuery } from '../graphql/generated/queryHandler';
+import { useStyles } from '../utils';
 import Commits from './Commits';
 import Entities from './Entities';
 import SearchInputField from './SearchInputField';
@@ -14,7 +14,6 @@ const PAGESIZE = 5;
 const FullTextSearch: React.FC<{ findBy: string }> = ({ findBy }) => {
   const classes = useStyles();
   const options = {
-    context: { backend: 'queryHandler' },
     fetchPolicy: 'cache-and-network' as any,
   };
   const [

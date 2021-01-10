@@ -7,6 +7,8 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import React, { useState } from 'react';
 import { useMeQuery } from '../graphql/generated/ui-control';
+// import CreateCommit from './CreateCommit';
+import FullTextSearch from './FullTextSearch';
 import Metrics from './Metrics';
 
 const Dashboard: (option: { debug?: boolean }) => JSX.Element = ({ debug = false }) => {
@@ -52,8 +54,8 @@ const Dashboard: (option: { debug?: boolean }) => JSX.Element = ({ debug = false
       <br />
       {{
         ['metrics' as string]: <Metrics />,
-        // ['entity']: <FullTextSearch findBy={selection} />,
-        // ['commit']: <FullTextSearch findBy={selection} />,
+        ['entity']: <FullTextSearch findBy={selection} />,
+        ['commit']: <FullTextSearch findBy={selection} />,
         // ['newcommit']: <CreateCommit />,
       }[selection] || <Metrics />}
     </Container>

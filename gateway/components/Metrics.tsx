@@ -33,7 +33,6 @@ const vertical = (items: string[]) =>
 const Metrics: React.FC<any> = () => {
   const classes = useStyles();
   const { data, loading, error } = useGetEntityInfoQuery({
-    context: { backend: 'queryHandler' },
     fetchPolicy: 'cache-and-network',
   });
 
