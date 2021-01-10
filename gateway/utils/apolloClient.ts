@@ -1,5 +1,6 @@
 import { ApolloClient, InMemoryCache, HttpLink, ApolloLink, Operation } from '@apollo/client';
 import { SchemaLink } from '@apollo/link-schema';
+import fetch from 'isomorphic-unfetch';
 import { useMemo } from 'react';
 import { schema } from '../server/schema';
 
@@ -9,6 +10,7 @@ let apolloClient: ApolloClient<any>;
 const bbfLink = new HttpLink({
   uri: '/control/api/graphql',
   credentials: 'same-origin',
+  fetch,
 });
 
 const gatewayLink = new HttpLink({

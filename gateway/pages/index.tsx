@@ -1,9 +1,8 @@
-import Typography from '@material-ui/core/Typography';
-import Layout from 'components/Layout';
 import { NextPage } from 'next';
 import React from 'react';
+import Layout from '../components/Layout';
 
-const Index: NextPage<null> = () => {
+const Index: NextPage<any> = () => {
   return (
     <Layout title="Gateway">
       <ol>

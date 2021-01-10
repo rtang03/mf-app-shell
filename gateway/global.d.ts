@@ -12,10 +12,10 @@ declare module 'react' {
   }
 
   // <style jsx> and <style jsx global> support for styled-jsx
-  interface StyleHTMLAttributes<T> extends HTMLAttributes<T> {
+  interface StyleHTMLAttributes<T> extends React.HTMLAttributes<T> {
     // ❗️ Original nextjs typing is: jsx?: boolean | undefined
     // This hack turn off un-desired warning
-    jsx?: string;
-    global?: string;
+    jsx?: any;
+    global?: any;
   }
 }

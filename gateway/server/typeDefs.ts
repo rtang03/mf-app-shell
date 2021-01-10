@@ -1,9 +1,30 @@
 import { gql } from '@apollo/client/core';
 
+// mocked API for queryHandler microservice, can see packages/gateway-lib/src/query-handler/typeDef.ts
+
 export const typeDefs = gql`
+  schema {
+    query: Query
+    mutation: Mutation
+  }
+
   type Query {
-    ping: String
     me: User!
+    getEntityInfo: [EntityInfo!]!
+  }
+
+  type Mutation {
+    ping(message: String): Boolean
+  }
+
+  type EntityInfo {
+    entityName: String!
+    total: Int!
+    events: [String!]!
+    tagged: [String!]!
+    creators: [String!]!
+    orgs: [String!]!
+    totalCommit: Int!
   }
 
   type User {

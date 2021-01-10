@@ -1,12 +1,63 @@
-import React from 'react';
+import Container from '@material-ui/core/Container';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import AssessmentIcon from '@material-ui/icons/Assessment';
+import ChangeHistoryIcon from '@material-ui/icons/ChangeHistory';
+import FindInPageIcon from '@material-ui/icons/FindInPage';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import React, { useState } from 'react';
 import { useMeQuery } from '../graphql/generated/ui-control';
+import Metrics from './Metrics';
 
-const Dashboard: () => JSX.Element = () => {
+const Dashboard: (option: { debug?: boolean }) => JSX.Element = ({ debug = false }) => {
+  // query /control/api/graphql
   const { data, error, loading } = useMeQuery();
-  console.log(data);
-  console.log(error);
 
-  return <div>test</div>;
+  // Toggle Button
+  const [selection, setSelection] = useState('metrics');
+  const handleSelection = (event: React.MouseEvent<HTMLElement>, item: string) =>
+    setSelection(item);
+
+  if (!data?.me && !loading) {
+    console.error(error?.message);
+    return <div>Error in page</div>;
+  }
+
+  debug && console.log('[debug] meQuery return:', data?.me);
+
+  return (
+    <Container>
+      <ToggleButtonGroup
+        aria-label="text alignment"
+        exclusive
+        value={selection}
+        onChange={handleSelection}>
+        <ToggleButton value="metrics" aria-label="loaded entity">
+          <AssessmentIcon />
+          Metrics
+        </ToggleButton>
+        <ToggleButton value="entity" aria-label="find by entity">
+          <FindInPageIcon />
+          By Type
+        </ToggleButton>
+        <ToggleButton value="commit" aria-label="find by commit">
+          <ChangeHistoryIcon />
+          History
+        </ToggleButton>
+        <ToggleButton value="newcommit" aria-label="new commit">
+          <AddBoxIcon />
+          Commit
+        </ToggleButton>
+      </ToggleButtonGroup>
+      <br />
+      {{
+        ['metrics' as string]: <Metrics />,
+        // ['entity']: <FullTextSearch findBy={selection} />,
+        // ['commit']: <FullTextSearch findBy={selection} />,
+        // ['newcommit']: <CreateCommit />,
+      }[selection] || <Metrics />}
+    </Container>
+  );
 };
 
 export default Dashboard;

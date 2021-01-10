@@ -31,7 +31,7 @@ module.exports = {
         },
       },
       {
-        test: /\.js$/,
+        test: /remoteEntry|vendors-node_modules_react_index_js|main|vendors-node_modules_apollo_client_index_js\.js$/,
         enforce: 'pre',
         use: ['source-map-loader'],
       },
@@ -45,7 +45,7 @@ module.exports = {
         app1: 'app1',
       },
       exposes: {
-        './Gateway': '../components/Gateway',
+        './DashboardService': '../components/DashboardService',
       },
       shared: dependencies,
     }),

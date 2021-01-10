@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Head from 'next/head';
 import Link from 'next/link';
 import React from 'react';
-import { useStyles } from 'utils';
+import { useStyles } from '../utils';
 
 const Layout: React.FC<{ title?: string }> = ({ children, title = 'no title' }) => {
   const classes = useStyles();
@@ -16,12 +16,13 @@ const Layout: React.FC<{ title?: string }> = ({ children, title = 'no title' }) 
       <Head>
         <title>{title}</title>
       </Head>
-      <style jsx='true' global='true'>{`
+      <style jsx global>{`
         *,
         *::before,
         *::after {
           box-sizing: border-box;
         }
+
         body {
           margin: 0;
           color: #333;
@@ -29,10 +30,12 @@ const Layout: React.FC<{ title?: string }> = ({ children, title = 'no title' }) 
             Arial, Noto Sans, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
             'Noto Color Emoji';
         }
+
         a {
           color: inherit;
           text-decoration: none;
         }
+
         .container {
           max-width: 65rem;
           margin: 1.5rem auto;
@@ -60,7 +63,7 @@ const Layout: React.FC<{ title?: string }> = ({ children, title = 'no title' }) 
         </div>
       </header>
       <br />
-      <Typography variant="h6">Feature</Typography>
+      <Typography variant="h6">Features</Typography>
       {children}
     </div>
   );

@@ -1,6 +1,9 @@
 import { fade, makeStyles, Theme } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles((theme: Theme) => ({
+  table: {
+    minWidth: 650,
+  },
   '@global': {
     body: {
       backgroundColor: theme.palette.common.white,
@@ -85,9 +88,6 @@ export const useStyles = makeStyles((theme: Theme) => ({
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     width: '60ch',
-  },
-  table: {
-    minWidth: 650,
   },
   expand: {
     transform: 'rotate(0deg)',
