@@ -6,7 +6,7 @@ import withAuth from 'components/withAuth';
 import { useMeQuery } from 'graphql/generated/ui-control';
 import { NextPage } from 'next';
 import React from 'react';
-import { useApollo } from 'utils';
+import { useApolloWithAuth } from 'utils';
 
 /*
 📌 IMPORTANT NOTE:
@@ -29,7 +29,7 @@ const AppendToggleButtonStyleTag = withStyles({ root: { visibility: 'hidden' } }
 
 const Dashboard: NextPage<any> = (props) => {
   const { data, error, loading } = useMeQuery();
-  const apolloClient = useApollo(props?.initialApolloState);
+  const apolloClient = useApolloWithAuth(props?.initialApolloState);
   const url = process.env.NEXT_PUBLIC_MF_GATEWAY || '';
 
   return !data?.me ? (
@@ -38,7 +38,7 @@ const Dashboard: NextPage<any> = (props) => {
     </Layout>
   ) : (
     <Layout title="Dashboard" loading={loading} user={data?.me} restricted={true}>
-      <AppendToggleButtonStyleTag />
+      <AppendToggleButtonStyleTag value="nil">nil</AppendToggleButtonStyleTag>
       <div>
         <RemoteComponent
           url={url}

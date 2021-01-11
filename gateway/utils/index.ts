@@ -1,2 +1,2 @@
 export * from './useStyles';
-export * from './apolloClient';
+export * from './useApollo';

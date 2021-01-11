@@ -3,7 +3,7 @@ import cookie from 'cookie';
 import { NextPage, NextPageContext } from 'next';
 import Router from 'next/router';
 import React, { Component, useEffect } from 'react';
-import { tokenStore, useApollo } from 'utils';
+import { tokenStore, useApolloWithAuth } from 'utils';
 
 /**
  * HOC for refreshing token, for children component
@@ -129,7 +129,7 @@ const withAuth = (WrappedComponent: NextPage<any>) => {
       []
     );
 
-    const apolloClient = useApollo(props?.initialApolloState);
+    const apolloClient = useApolloWithAuth(props?.initialApolloState);
 
     // IMPORTANT: use different apollo client (with different authorization header)
     return (

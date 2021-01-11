@@ -4,10 +4,9 @@ import fetch from 'isomorphic-unfetch';
 import { useMemo } from 'react';
 import { schema } from '../server/schema';
 
-let apolloClient: ApolloClient<any>;
+let client: ApolloClient<any>;
 
-// fetching link for bbf (aka. BackendForFrontend}
-const bbfLink = new HttpLink({
+const backendForFrontendLink = new HttpLink({
   uri: '/control/api/graphql',
   credentials: 'same-origin',
   fetch,
@@ -26,7 +25,7 @@ const condition = (dest: string) => ({ getContext }: Operation) => getContext().
 const createIsomorphLink = () =>
   typeof window === 'undefined'
     ? ApolloLink.split(condition('gateway'), gatewayLink, new SchemaLink({ schema }))
-    : ApolloLink.split(condition('gateway'), gatewayLink, bbfLink);
+    : ApolloLink.split(condition('gateway'), gatewayLink, backendForFrontendLink);
 
 const createClient = () =>
   new ApolloClient({
@@ -39,7 +38,7 @@ const createClient = () =>
 export const initializeApollo: (initialState: any) => ApolloClient<unknown> = (
   initialState = null
 ) => {
-  const _apolloClient = apolloClient ?? createClient();
+  const _apolloClient = client ?? createClient();
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
   // gets hydrated here
@@ -48,7 +47,7 @@ export const initializeApollo: (initialState: any) => ApolloClient<unknown> = (
   // For SSG and SSR always create a new Apollo Client
   if (typeof window === 'undefined') return _apolloClient;
   // Create the Apollo Client once in the client
-  !apolloClient && (apolloClient = _apolloClient);
+  !client && (client = _apolloClient);
 
   return _apolloClient;
 };

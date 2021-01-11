@@ -13,21 +13,9 @@ const authLink = () =>
     headers: { ...headers, authorization: `Bearer ${tokenStore.getToken()}` },
   }));
 
-// fetching link for bbf (aka. BackendForFrontend}
-const bbfLink = new HttpLink({
+const backendForFrontendLink = new HttpLink({
   uri: '/control/api/graphql',
   credentials: 'same-origin',
-});
-
-// TODO: Less preferred. The browser client will access the queryHandler, outside nginx
-// Alternate implementation is to create new BBF api, to route request from BBF, to INTERNAL QueryHandler
-// Also, process.env.QH_EXTERNAL_HOST will be available to browser, via .env.local
-
-const queryHandlerLink = new HttpLink({
-  uri:
-    process.env.NEXT_PUBLIC_QH_EXTERNAL_HOST ||
-    process.env.QH_EXTERNAL_HOST ||
-    'http://localhost:5001/graphql',
 });
 
 const gatewayLink = new HttpLink({
@@ -42,16 +30,8 @@ const condition = (dest: string) => ({ getContext }: Operation) => getContext().
 // https://www.loudnoises.us/next-js-two-apollo-clients-two-graphql-data-sources-the-easy-way/
 const createIsomorphLink = () =>
   typeof window === 'undefined'
-    ? ApolloLink.split(
-        condition('queryHandler'),
-        queryHandlerLink,
-        ApolloLink.split(condition('gateway'), gatewayLink, new SchemaLink({ schema }))
-      )
-    : ApolloLink.split(
-        condition('queryHandler'),
-        queryHandlerLink,
-        ApolloLink.split(condition('gateway'), gatewayLink, bbfLink)
-      );
+    ? ApolloLink.split(condition('gateway'), gatewayLink, new SchemaLink({ schema }))
+    : ApolloLink.split(condition('gateway'), gatewayLink, backendForFrontendLink);
 
 const createClient = () =>
   new ApolloClient({
@@ -78,5 +58,5 @@ export const initializeApollo: (initialState: any) => ApolloClient<unknown> = (
   return _apolloClient;
 };
 
-export const useApollo: (initialState: any) => ApolloClient<unknown> = (initialState) =>
+export const useApolloWithAuth: (initialState: any) => ApolloClient<unknown> = (initialState) =>
   useMemo(() => initializeApollo(initialState), [initialState]);

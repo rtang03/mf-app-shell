@@ -1,20 +1,18 @@
-import { gql } from '@apollo/client/core';
-
-export const typeDefs = gql`
+export default `
+  """
+  Qurey schema for Backend-For-Frontend
+  """
   type Query {
     ping: String
+    """
+    return authenticated user from auth-server
+    """
     me: User!
   }
 
-  type User {
-    id: String!
-    username: String!
-    email: String!
-    is_deleted: Boolean!
-    is_admin: Boolean!
-    password: String!
-  }
-
+  """
+  Mutation schema for Backend-For-Frontend
+  """
   type Mutation {
     refreshToken: RefreshToken!
     register(email: String!, password: String!, username: String!): RegisteredUser!
@@ -23,6 +21,17 @@ export const typeDefs = gql`
     forget(email: String!): Boolean
     reset(password: String!, password2: String!): Boolean
     updateProfile(id: String!, email: String!, username: String!): UpdatedProfile!
+  }
+
+
+  # User from auth-server
+  type User {
+    id: String!
+    username: String!
+    email: String!
+    is_deleted: Boolean!
+    is_admin: Boolean!
+    password: String!
   }
 
   type UpdatedProfile {

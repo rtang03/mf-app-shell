@@ -2,10 +2,10 @@ import { ApolloProvider } from '@apollo/client';
 import { AuthProvider, AlertProvider } from 'components';
 import { NextPage } from 'next';
 import React from 'react';
-import { useApollo } from 'utils/apolloClient';
+import { useApolloWithAuth } from 'utils/useApolloWithAuth';
 
 const App: NextPage<any> = ({ Component, pageProps }) => {
-  const apolloClient = useApollo(pageProps.initialApolloState);
+  const apolloClient = useApolloWithAuth(pageProps.initialApolloState);
 
   return (
     <AlertProvider>

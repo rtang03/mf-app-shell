@@ -13,7 +13,8 @@ import next from 'next';
 import { ApolloContext } from '../types';
 import { schema } from './schema';
 
-const authUri = process.env.AUTH_HOST as string;
+const authUri = process.env.AUTH_URI as string;
+const queryHanderUri = process.env.QUERYHANDLER_URI as string;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
@@ -27,7 +28,7 @@ const apolloServer = new ApolloServer({
     const _accessToken = authorization?.split(' ')[1];
     const accessToken = _accessToken === 'null' ? undefined : _accessToken;
 
-    return { res, accessToken, refreshToken, authUri } as ApolloContext;
+    return { res, accessToken, refreshToken, authUri, queryHanderUri } as ApolloContext;
   },
 });
 
@@ -35,7 +36,12 @@ app
   .prepare()
   .then(() => {
     if (!authUri) {
-      console.error('environment variable $AUTH_HOST is empty');
+      console.error('environment variable $AUTH_URI is empty');
+      process.exit(1);
+    }
+
+    if (!queryHanderUri) {
+      console.error('environment variable $QUERYHANDLER_URI is empty');
       process.exit(1);
     }
 
