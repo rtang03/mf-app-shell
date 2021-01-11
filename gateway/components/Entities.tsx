@@ -2,7 +2,7 @@ import Typography from '@material-ui/core/Typography';
 import isEqual from 'lodash/isEqual';
 import pick from 'lodash/pick';
 import React from 'react';
-import { QueryHandlerEntity } from '../graphql/generated/queryHandler';
+import { QueryHandlerEntity } from '../graphql/generated-queryHandler';
 import Entity from './Entity';
 
 const Entities: React.FC<{ entities?: QueryHandlerEntity[] }> = ({ entities }) => {

@@ -1,13 +1,11 @@
 import Container from '@material-ui/core/Container';
-import AddBoxIcon from '@material-ui/icons/AddBox';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import ChangeHistoryIcon from '@material-ui/icons/ChangeHistory';
 import FindInPageIcon from '@material-ui/icons/FindInPage';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import React, { useState } from 'react';
-import { useMeQuery } from '../graphql/generated/ui-control';
-// import CreateCommit from './CreateCommit';
+import { useMeQuery } from '../graphql/generated-nextjs-backend';
 import FullTextSearch from './FullTextSearch';
 import Metrics from './Metrics';
 
@@ -46,17 +44,12 @@ const Dashboard: (option: { debug?: boolean }) => JSX.Element = ({ debug = false
           <ChangeHistoryIcon />
           History
         </ToggleButton>
-        <ToggleButton value="newcommit" aria-label="new commit">
-          <AddBoxIcon />
-          Commit
-        </ToggleButton>
       </ToggleButtonGroup>
       <br />
       {{
         ['metrics' as string]: <Metrics />,
         ['entity']: <FullTextSearch findBy={selection} />,
         ['commit']: <FullTextSearch findBy={selection} />,
-        // ['newcommit']: <CreateCommit />,
       }[selection] || <Metrics />}
     </Container>
   );

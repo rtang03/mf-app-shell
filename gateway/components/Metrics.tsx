@@ -10,7 +10,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import omit from 'lodash/omit';
 import React, { Fragment } from 'react';
-import { useGetEntityInfoQuery, EntityInfo } from '../graphql/generated/queryHandler';
+import { useGetEntityInfoQuery, EntityInfo } from '../graphql/generated-queryHandler';
 import { useStyles } from '../utils';
 
 const vertical = (items: string[]) =>

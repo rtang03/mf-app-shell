@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from 'clsx';
 import React, { useState } from 'react';
-import { Commit } from '../graphql/generated/queryHandler';
+import { Commit } from '../graphql/generated-queryHandler';
 import { useStyles } from '../utils';
 
 const CommitComponent: React.FC<{ commit: Commit }> = ({ commit }) => {

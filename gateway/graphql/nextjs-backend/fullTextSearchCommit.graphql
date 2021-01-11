@@ -1,9 +1,9 @@
-query FTSEntity (
+query FullTextSearchCommit (
     $query: String!
     $cursor: Int
     $pagesize: Int
    ) {
-    fullTextSearchEntity (
+    fullTextSearchCommit (
       query: $query
       cursor: $cursor
       pagesize: $pagesize
@@ -14,15 +14,10 @@ query FTSEntity (
       items {
         id
         entityName
-        value
-        commits
-        events
-        tag
-        desc
-        created
-        creator
-        lastModified
-        timeline
+        version
+        commitId
+        entityId
+        eventsString
       }
     }
   }

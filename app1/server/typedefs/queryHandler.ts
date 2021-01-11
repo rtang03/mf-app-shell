@@ -52,6 +52,17 @@ export default `
     getNotification(entityName: String, id: String, commitId: String): Notification!
   }
 
+  type Mutation {
+    ###
+    # e.g. payloadString
+    # "{"id":"test_12","desc":"desc12","tag":"gw-lib"}"
+    ###
+    """
+    create new commmit for dev / testing purpose
+    """
+    createCommit(entityName: String, id: String, type: String, payloadString: String): Commit!
+  }
+
   # Notification details
   type Notification {
     creator: String!

@@ -3,7 +3,10 @@ import Grid from '@material-ui/core/Grid';
 import Pagination from '@material-ui/lab/Pagination';
 import { Form, Formik } from 'formik';
 import React from 'react';
-import { useFtsCommitLazyQuery, useFtsEntityLazyQuery } from '../graphql/generated/queryHandler';
+import {
+  useFullTextSearchCommitLazyQuery,
+  useFullTextSearchEntityLazyQuery,
+} from '../graphql/generated-queryHandler';
 import { useStyles } from '../utils';
 import Commits from './Commits';
 import Entities from './Entities';
@@ -19,11 +22,11 @@ const FullTextSearch: React.FC<{ findBy: string }> = ({ findBy }) => {
   const [
     searchEntity,
     { data: entities, loading: entityLoading, fetchMore: fetchMoreEntity },
-  ] = useFtsEntityLazyQuery(options);
+  ] = useFullTextSearchEntityLazyQuery(options);
   const [
     searchCommit,
     { data: commits, loading: commitLoading, fetchMore: fetchMoreCommit },
-  ] = useFtsCommitLazyQuery(options);
+  ] = useFullTextSearchCommitLazyQuery(options);
   const handlePageChange = (fetchMore: any) => async (
     event: React.ChangeEvent<unknown>,
     pagenumber: number

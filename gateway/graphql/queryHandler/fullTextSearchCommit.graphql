@@ -1,4 +1,4 @@
-query FTSCommit (
+query FullTextSearchCommit (
     $query: String!
     $cursor: Int
     $pagesize: Int

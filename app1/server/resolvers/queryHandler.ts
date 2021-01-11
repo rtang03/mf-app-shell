@@ -1,13 +1,15 @@
 import util from 'util';
 import { ApolloError } from '@apollo/client';
 import { GraphQLClient } from 'graphql-request';
-import {
+import type {
+  Commit,
   EntityInfo,
   Notification,
   PaginatedCommit,
   PaginatedEntity,
 } from '../../graphql/generated';
 import type { ApolloContext } from '../../types';
+import CreateCommitMutation from './queryToQueryHandler/createCommit';
 import FullTextSearchCommitQuery from './queryToQueryHandler/fullTextSearchCommit';
 import FullTextSearchEntityQuery from './queryToQueryHandler/fullTextSearchEntity';
 import GetEntityInfoQuery from './queryToQueryHandler/getEntityInfo';
@@ -49,6 +51,11 @@ type Resolvers = {
       variables: any,
       context: ApolloContext
     ) => Promise<Notification[]>;
+  };
+  Mutation: {
+    // ping is not required to implement in BBF
+    // reloadEntities is not require to implement in BBF
+    createCommit: (root: unknown, variables: any, context: ApolloContext) => Promise<Commit>;
   };
 };
 
@@ -126,6 +133,10 @@ const resolvers: Resolvers = {
         query: GetNotificationsQuery,
         ctx,
       }),
+  },
+  Mutation: {
+    createCommit: async (_, variables, ctx) =>
+      forwardRequest<Commit>({ key: 'createCommit', query: CreateCommitMutation, variables, ctx }),
   },
 };
 

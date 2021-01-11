@@ -1,9 +1,12 @@
 import { makeExecutableSchema } from 'graphql-tools';
-import type { EntityInfo } from '../graphql/generated/queryHandler';
-import type { Commit, Paginated, QueryHandlerEntity } from '../types';
+import type {
+  EntityInfo,
+  PaginatedCommit,
+  PaginatedEntity,
+} from '../graphql/generated-queryHandler';
 import { typeDefs } from './typeDefs';
 
-const paginatedCommit: Paginated<Commit> = {
+const paginatedCommit: PaginatedCommit = {
   total: 1,
   cursor: 0,
   hasMore: false,
@@ -20,7 +23,7 @@ const paginatedCommit: Paginated<Commit> = {
   ],
 };
 
-const paginatedEntity: Paginated<QueryHandlerEntity> = {
+const paginatedEntity: PaginatedEntity = {
   total: 1,
   cursor: 0,
   hasMore: false,
@@ -65,10 +68,10 @@ export const resolvers = {
           totalCommit: 1,
         },
       ]),
-    fullTextSearchCommit: () => Promise.resolve<Paginated<Commit>>(paginatedCommit),
-    fullTextSearchEntity: () => Promise.resolve<Paginated<QueryHandlerEntity>>(paginatedEntity),
-    paginatedCommit: () => Promise.resolve<Paginated<Commit>>(paginatedCommit),
-    paginatedEntity: () => Promise.resolve<Paginated<QueryHandlerEntity>>(paginatedEntity),
+    fullTextSearchCommit: () => Promise.resolve<PaginatedCommit>(paginatedCommit),
+    fullTextSearchEntity: () => Promise.resolve<PaginatedEntity>(paginatedEntity),
+    paginatedCommit: () => Promise.resolve<PaginatedCommit>(paginatedCommit),
+    paginatedEntity: () => Promise.resolve<PaginatedEntity>(paginatedEntity),
   },
   Mutation: {
     // Healthcheck purpose: "ping" send message to Redis.PubSub. If no error, return true.
