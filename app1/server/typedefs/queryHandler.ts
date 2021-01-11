@@ -4,6 +4,44 @@ export default `
     Summary of entities in query handler
     """
     getEntityInfo: [EntityInfo!]!
+    """
+    Full text search of commit
+    """
+    fullTextSearchCommit(query: String!, cursor: Int, pagesize: Int): PaginatedCommit!
+    """
+    Full text search of entity
+    """
+    fullTextSearchEntity(query: String!, cursor: Int, pagesize: Int): PaginatedEntity!
+    """
+    Parametric query to return paginated entities
+    """
+    paginatedEntity(
+      creator: String
+      cursor: Int
+      pagesize: Int
+      entityName: String!
+      id: String
+      scope: SearchScope
+      startTime: Int
+      endTime: Int
+      sortByField: String
+      sort: String
+    ): PaginatedEntity!
+    """
+    Parametric query to return paginated commits
+    """
+    paginatedCommit(
+      creator: String
+      cursor: Int
+      pagesize: Int
+      entityName: String!
+      id: String
+      events: [String!]
+      startTime: Int
+      endTime: Int
+      sortByField: String
+      sort: String
+    ): PaginatedCommit!
   }
 
   # Entity metadata
