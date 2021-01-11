@@ -1,10 +1,20 @@
+import util from 'util';
 import { ApolloError } from '@apollo/client';
 import { GraphQLClient } from 'graphql-request';
-import { EntityInfo } from '../../graphql/generated/queryHandler';
-import { ApolloContext, Commit, Paginated, QueryHandlerEntity } from '../../types';
-import FullTextSearchCommit from './queryToQueryHandler/fullTextSearchCommit';
-import FullTextSearchEntity from './queryToQueryHandler/fullTextSearchEntity';
+import {
+  EntityInfo,
+  Notification,
+  PaginatedCommit,
+  PaginatedEntity,
+} from '../../graphql/generated';
+import type { ApolloContext } from '../../types';
+import FullTextSearchCommitQuery from './queryToQueryHandler/fullTextSearchCommit';
+import FullTextSearchEntityQuery from './queryToQueryHandler/fullTextSearchEntity';
 import GetEntityInfoQuery from './queryToQueryHandler/getEntityInfo';
+import GetNotificationQuery from './queryToQueryHandler/getNotification';
+import GetNotificationsQuery from './queryToQueryHandler/getNotifications';
+import PaginatedCommitQuery from './queryToQueryHandler/paginatedCommit';
+import PaginatedEntityQuery from './queryToQueryHandler/paginatedEntity';
 
 type Resolvers = {
   Query: {
@@ -13,31 +23,59 @@ type Resolvers = {
       root: unknown,
       variables: any,
       context: ApolloContext
-    ) => Promise<Paginated<Commit> | null>;
+    ) => Promise<PaginatedCommit>;
     fullTextSearchEntity: (
       root: unknown,
       variables: any,
       context: ApolloContext
-    ) => Promise<Paginated<QueryHandlerEntity> | null>;
+    ) => Promise<PaginatedEntity>;
+    paginatedCommit: (
+      root: unknown,
+      variables: any,
+      context: ApolloContext
+    ) => Promise<PaginatedCommit>;
+    paginatedEntity: (
+      root: unknown,
+      variables: any,
+      context: ApolloContext
+    ) => Promise<PaginatedEntity>;
+    getNotification: (
+      root: unknown,
+      variables: any,
+      context: ApolloContext
+    ) => Promise<Notification>;
+    getNotifications: (
+      root: unknown,
+      variables: any,
+      context: ApolloContext
+    ) => Promise<Notification[]>;
   };
 };
 
-const forwardRequest: (option: {
+// The BackendForFrontend will forward gql request to queryHandler api
+const forwardRequest: <TResult>(option: {
   key: string;
   query: string;
   variables?: any;
   ctx: ApolloContext;
-}) => Promise<any> = async ({ key, query, variables, ctx }) => {
-  const headers = {
-    'Access-Control-Allow-Origin': '*',
-    authorization: `bearer ${ctx.accessToken}`,
-  };
-  const client = new GraphQLClient(ctx.queryHanderUri, { headers });
+}) => Promise<TResult> = async ({
+  key,
+  query,
+  variables,
+  ctx: { accessToken, queryHanderUri },
+}) => {
+  const client = new GraphQLClient(queryHanderUri, {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      authorization: `bearer ${accessToken}`,
+    },
+  });
+
   try {
     const result = await client.request(query, variables);
     return result?.[key];
   } catch (e) {
-    console.error('fail to graphql.request: ', query);
+    console.error(util.format('fail to graphql.request - %s: %j', key, e));
     return new ApolloError({ errorMessage: e.message });
   }
 };
@@ -45,43 +83,49 @@ const forwardRequest: (option: {
 // Note: all call to Query Handler is GQL
 const resolvers: Resolvers = {
   Query: {
-    getEntityInfo: async (_, __, ctx) => {
-      const headers = {
-        'Access-Control-Allow-Origin': '*',
-        authorization: `bearer ${ctx.accessToken}`,
-      };
-      const query = GetEntityInfoQuery;
-      const client = new GraphQLClient(ctx.queryHanderUri, { headers });
-      try {
-        const result = await client.request(query);
-        return result?.getEntityInfo;
-      } catch (e) {
-        console.error('fail to graphql.request: ', query);
-        return new ApolloError({ errorMessage: e.message });
-      }
-    },
-    fullTextSearchCommit: async (_, variables, ctx) => {
-      const headers = {
-        'Access-Control-Allow-Origin': '*',
-        authorization: `bearer ${ctx.accessToken}`,
-      };
-      const query = FullTextSearchCommit;
-      const client = new GraphQLClient(ctx.queryHanderUri, { headers });
-      try {
-        const result = await client.request(query, variables);
-        return result?.fullTextSearchCommit;
-      } catch (e) {
-        console.error('fail to graphql.request: ', query);
-        return new ApolloError({ errorMessage: e.message });
-      }
-    },
-    fullTextSearchEntity: async (_, variables, ctx) => {
-      const headers = {
-        'Access-Control-Allow-Origin': '*',
-        authorization: `bearer ${ctx.accessToken}`,
-      };
-      return null;
-    },
+    getEntityInfo: async (_, __, ctx) =>
+      forwardRequest<EntityInfo[]>({ key: 'getEntityInfo', query: GetEntityInfoQuery, ctx }),
+    fullTextSearchCommit: async (_, variables, ctx) =>
+      forwardRequest<PaginatedCommit>({
+        key: 'fullTextSearchCommit',
+        query: FullTextSearchCommitQuery,
+        variables,
+        ctx,
+      }),
+    fullTextSearchEntity: async (_, variables, ctx) =>
+      forwardRequest<PaginatedEntity>({
+        key: 'fullTextSearchEntity',
+        query: FullTextSearchEntityQuery,
+        variables,
+        ctx,
+      }),
+    paginatedCommit: async (_, variables, ctx) =>
+      forwardRequest<PaginatedCommit>({
+        key: 'paginatedCommit',
+        query: PaginatedCommitQuery,
+        variables,
+        ctx,
+      }),
+    paginatedEntity: async (_, variables, ctx) =>
+      forwardRequest<PaginatedEntity>({
+        key: 'paginatedEntity',
+        query: PaginatedEntityQuery,
+        variables,
+        ctx,
+      }),
+    getNotification: async (_, variables, ctx) =>
+      forwardRequest<Notification>({
+        key: 'getNotification',
+        query: GetNotificationQuery,
+        variables,
+        ctx,
+      }),
+    getNotifications: async (_, __, ctx) =>
+      forwardRequest<Notification[]>({
+        key: 'getNotification',
+        query: GetNotificationsQuery,
+        ctx,
+      }),
   },
 };
 

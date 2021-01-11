@@ -42,6 +42,23 @@ export default `
       sortByField: String
       sort: String
     ): PaginatedCommit!
+    """
+    Return lists of unread notifications
+    """
+    getNotifications: [Notification!]!
+    """
+    Return notification details
+    """
+    getNotification(entityName: String, id: String, commitId: String): Notification!
+  }
+
+  # Notification details
+  type Notification {
+    creator: String!
+    entityName: String!
+    id: String!
+    commitId: String!
+    read: Boolean!
   }
 
   # Entity metadata

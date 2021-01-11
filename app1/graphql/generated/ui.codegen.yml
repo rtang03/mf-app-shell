@@ -2,13 +2,11 @@ overwrite: true
 hooks:
   afterAllFileWrite:
     - tslint --fix
-    - prettier --write
 generates:
   graphql/generated/ui-control.tsx:
     documents: 'graphql/ui-control/*.graphql'
     schema: 'http://localhost:3000/control/api/graphql'
     plugins:
-      - add: '/* eslint-disable */'
       - 'typescript'
       - 'typescript-operations'
       - 'typescript-react-apollo'

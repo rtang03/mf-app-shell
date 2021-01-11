@@ -6,12 +6,12 @@ import Typography from '@material-ui/core/Typography';
 import CheckboxIcon from '@material-ui/icons/CheckBox';
 import CheckboxOutlineIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import React, { useState } from 'react';
 import {
   useGetNotificationsQuery,
   useGetNotificationLazyQuery,
   Notification,
-} from 'graphql/generated/queryHandler';
-import React, { useState } from 'react';
+} from '../graphql/generated';
 
 const ITEM_HEIGHT = 48;
 
@@ -23,11 +23,10 @@ const NotificationComponent: React.FC<any> = () => {
   const handleMenuClose = () => setAnchorEl(null);
 
   const { data, loading, refetch } = useGetNotificationsQuery({
-    context: { backend: 'queryHandler' },
     fetchPolicy: 'network-only',
     pollInterval: 5000,
   });
-  const [getOne] = useGetNotificationLazyQuery({ context: { backend: 'queryHandler' } });
+  const [getOne] = useGetNotificationLazyQuery();
   const handleRead = (entityName: string, id: string, commitId: string) => async () => {
     getOne({ variables: { entityName, id, commitId } });
     await refetch();
