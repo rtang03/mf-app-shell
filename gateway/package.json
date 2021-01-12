@@ -1,5 +1,5 @@
 {
-  "name": "@nextjs-sidecar/gw1",
+  "name": "@microfrontend/gateway",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -14,7 +14,9 @@
     "test-all": "yarn lint && yarn type-check && yarn test",
     "gen-hook:next": "graphql-codegen --config graphql/generated-next-backend/next-backend.codegen.yml",
     "gen-hook:qh": "graphql-codegen --config graphql/generated-queryHandler/queryHandler.codegen.yml",
-    "gen-hook:gw": "graphql-codegen --config graphql/generated-gateway/gateway.codegen.yml"
+    "gen-hook:gw": "graphql-codegen --config graphql/generated-gateway/gateway.codegen.yml",
+    "sidecar:build": "cd sidecar && yarn build",
+    "sidecar:start": "cd sidecar && yarn start"
   },
   "dependencies": {
     "@apollo/client": "^3.3.6",

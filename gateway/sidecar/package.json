@@ -1,9 +1,9 @@
 {
-  "name": "wp5-sidecar",
+  "name": "@microfrontend/gateway-sidecar",
   "version": "1.0.0",
   "scripts": {
     "build": "rimraf dist && webpack --mode development",
-    "start": "cd dist && PORT=8082 npx servor"
+    "start": "cd dist && PORT=8082 servor"
   },
   "devDependencies": {
     "@babel/core": "7.12.10",
@@ -18,7 +18,8 @@
     "webpack-cli": "4.3.0"
   },
   "dependencies": {
-    "react": "17.0.1"
+    "react": "17.0.1",
+    "servor": "^4.0.2"
   },
   "resolutions": {
     "webpack": "5.11.1"
