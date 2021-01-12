@@ -18,7 +18,9 @@ export type Scalars = {
 export type Query = {
   ping?: Maybe<Scalars['String']>;
   /** return authenticated user from auth-server */
-  me: User;
+  currentUser: User;
+  /** return wallet info */
+  getWallet?: Maybe<WalletEntry>;
   /** Summary of entities in query handler */
   getEntityInfo: Array<EntityInfo>;
   /** Full text search of commit */
@@ -98,6 +100,10 @@ export type Mutation = {
   forget?: Maybe<Scalars['Boolean']>;
   reset?: Maybe<Scalars['Boolean']>;
   updateProfile: UpdatedProfile;
+  /** create new server side wallet for new registered user */
+  createWallet: Scalars['Boolean'];
+  /** create new commmit for dev / testing purpose */
+  createCommit: Commit;
 };
 
 
@@ -136,6 +142,15 @@ export type MutationUpdateProfileArgs = {
   username: Scalars['String'];
 };
 
+
+/** Mutation schema for Backend-For-Frontend */
+export type MutationCreateCommitArgs = {
+  entityName?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  payloadString?: Maybe<Scalars['String']>;
+};
+
 /** User from auth-server */
 export type User = {
   id: Scalars['String'];
@@ -168,6 +183,12 @@ export type LoggedInUser = {
   access_token: Scalars['String'];
   jwtExpiryInSec: Scalars['String'];
   token_type: Scalars['String'];
+};
+
+export type WalletEntry = {
+  certificate: Scalars['String'];
+  type: Scalars['String'];
+  mspId: Scalars['String'];
 };
 
 /** Notification details */
@@ -235,55 +256,17 @@ export type Commit = {
   eventsString?: Maybe<Scalars['String']>;
 };
 
+export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CurrentUserQuery = { currentUser: Pick<User, 'id' | 'username' | 'email' | 'is_deleted' | 'is_admin'> };
+
 export type ForgetMutationVariables = Exact<{
   email: Scalars['String'];
 }>;
 
 
 export type ForgetMutation = Pick<Mutation, 'forget'>;
-
-export type FullTextSearchCommitQueryVariables = Exact<{
-  query: Scalars['String'];
-  cursor?: Maybe<Scalars['Int']>;
-  pagesize?: Maybe<Scalars['Int']>;
-}>;
-
-
-export type FullTextSearchCommitQuery = { fullTextSearchCommit: (
-    Pick<PaginatedCommit, 'total' | 'hasMore' | 'cursor'>
-    & { items: Array<Pick<Commit, 'id' | 'entityName' | 'version' | 'commitId' | 'entityId' | 'eventsString'>> }
-  ) };
-
-export type FullTextSearchEntityQueryVariables = Exact<{
-  query: Scalars['String'];
-  cursor?: Maybe<Scalars['Int']>;
-  pagesize?: Maybe<Scalars['Int']>;
-}>;
-
-
-export type FullTextSearchEntityQuery = { fullTextSearchEntity: (
-    Pick<PaginatedEntity, 'total' | 'hasMore' | 'cursor'>
-    & { items: Array<Pick<QueryHandlerEntity, 'id' | 'entityName' | 'value' | 'commits' | 'events' | 'tag' | 'desc' | 'created' | 'creator' | 'lastModified' | 'timeline'>> }
-  ) };
-
-export type GetEntityInfoQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetEntityInfoQuery = { getEntityInfo: Array<Pick<EntityInfo, 'entityName' | 'events' | 'creators' | 'orgs' | 'total' | 'totalCommit' | 'tagged'>> };
-
-export type GetNotificationQueryVariables = Exact<{
-  entityName: Scalars['String'];
-  id: Scalars['String'];
-  commitId: Scalars['String'];
-}>;
-
-
-export type GetNotificationQuery = { getNotification: Pick<Notification, 'id' | 'commitId' | 'entityName' | 'creator' | 'read'> };
-
-export type GetNotificationsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetNotificationsQuery = { getNotifications: Array<Pick<Notification, 'id' | 'commitId' | 'entityName' | 'creator' | 'read'>> };
 
 export type LoginMutationVariables = Exact<{
   username: Scalars['String'];
@@ -297,11 +280,6 @@ export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 
 export type LogoutMutation = Pick<Mutation, 'logout'>;
-
-export type MeQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type MeQuery = { me: Pick<User, 'id' | 'username' | 'email' | 'is_deleted' | 'is_admin'> };
 
 export type RegisterMutationVariables = Exact<{
   username: Scalars['String'];
@@ -330,6 +308,42 @@ export type UpdateProfileMutationVariables = Exact<{
 export type UpdateProfileMutation = { updateProfile: Pick<UpdatedProfile, 'ok' | 'email' | 'username'> };
 
 
+export const CurrentUserDocument = gql`
+    query CurrentUser {
+  currentUser {
+    id
+    username
+    email
+    is_deleted
+    is_admin
+  }
+}
+    `;
+
+/**
+ * __useCurrentUserQuery__
+ *
+ * To run a query within a React component, call `useCurrentUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCurrentUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCurrentUserQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCurrentUserQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<CurrentUserQuery, CurrentUserQueryVariables>) {
+        return ApolloReactHooks.useQuery<CurrentUserQuery, CurrentUserQueryVariables>(CurrentUserDocument, baseOptions);
+      }
+export function useCurrentUserLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<CurrentUserQuery, CurrentUserQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<CurrentUserQuery, CurrentUserQueryVariables>(CurrentUserDocument, baseOptions);
+        }
+export type CurrentUserQueryHookResult = ReturnType<typeof useCurrentUserQuery>;
+export type CurrentUserLazyQueryHookResult = ReturnType<typeof useCurrentUserLazyQuery>;
+export type CurrentUserQueryResult = ApolloReactCommon.QueryResult<CurrentUserQuery, CurrentUserQueryVariables>;
 export const ForgetDocument = gql`
     mutation Forget($email: String!) {
   forget(email: $email)
@@ -360,214 +374,6 @@ export function useForgetMutation(baseOptions?: ApolloReactHooks.MutationHookOpt
 export type ForgetMutationHookResult = ReturnType<typeof useForgetMutation>;
 export type ForgetMutationResult = ApolloReactCommon.MutationResult<ForgetMutation>;
 export type ForgetMutationOptions = ApolloReactCommon.BaseMutationOptions<ForgetMutation, ForgetMutationVariables>;
-export const FullTextSearchCommitDocument = gql`
-    query FullTextSearchCommit($query: String!, $cursor: Int, $pagesize: Int) {
-  fullTextSearchCommit(query: $query, cursor: $cursor, pagesize: $pagesize) {
-    total
-    hasMore
-    cursor
-    items {
-      id
-      entityName
-      version
-      commitId
-      entityId
-      eventsString
-    }
-  }
-}
-    `;
-
-/**
- * __useFullTextSearchCommitQuery__
- *
- * To run a query within a React component, call `useFullTextSearchCommitQuery` and pass it any options that fit your needs.
- * When your component renders, `useFullTextSearchCommitQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFullTextSearchCommitQuery({
- *   variables: {
- *      query: // value for 'query'
- *      cursor: // value for 'cursor'
- *      pagesize: // value for 'pagesize'
- *   },
- * });
- */
-export function useFullTextSearchCommitQuery(baseOptions: ApolloReactHooks.QueryHookOptions<FullTextSearchCommitQuery, FullTextSearchCommitQueryVariables>) {
-        return ApolloReactHooks.useQuery<FullTextSearchCommitQuery, FullTextSearchCommitQueryVariables>(FullTextSearchCommitDocument, baseOptions);
-      }
-export function useFullTextSearchCommitLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<FullTextSearchCommitQuery, FullTextSearchCommitQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<FullTextSearchCommitQuery, FullTextSearchCommitQueryVariables>(FullTextSearchCommitDocument, baseOptions);
-        }
-export type FullTextSearchCommitQueryHookResult = ReturnType<typeof useFullTextSearchCommitQuery>;
-export type FullTextSearchCommitLazyQueryHookResult = ReturnType<typeof useFullTextSearchCommitLazyQuery>;
-export type FullTextSearchCommitQueryResult = ApolloReactCommon.QueryResult<FullTextSearchCommitQuery, FullTextSearchCommitQueryVariables>;
-export const FullTextSearchEntityDocument = gql`
-    query FullTextSearchEntity($query: String!, $cursor: Int, $pagesize: Int) {
-  fullTextSearchEntity(query: $query, cursor: $cursor, pagesize: $pagesize) {
-    total
-    hasMore
-    cursor
-    items {
-      id
-      entityName
-      value
-      commits
-      events
-      tag
-      desc
-      created
-      creator
-      lastModified
-      timeline
-    }
-  }
-}
-    `;
-
-/**
- * __useFullTextSearchEntityQuery__
- *
- * To run a query within a React component, call `useFullTextSearchEntityQuery` and pass it any options that fit your needs.
- * When your component renders, `useFullTextSearchEntityQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFullTextSearchEntityQuery({
- *   variables: {
- *      query: // value for 'query'
- *      cursor: // value for 'cursor'
- *      pagesize: // value for 'pagesize'
- *   },
- * });
- */
-export function useFullTextSearchEntityQuery(baseOptions: ApolloReactHooks.QueryHookOptions<FullTextSearchEntityQuery, FullTextSearchEntityQueryVariables>) {
-        return ApolloReactHooks.useQuery<FullTextSearchEntityQuery, FullTextSearchEntityQueryVariables>(FullTextSearchEntityDocument, baseOptions);
-      }
-export function useFullTextSearchEntityLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<FullTextSearchEntityQuery, FullTextSearchEntityQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<FullTextSearchEntityQuery, FullTextSearchEntityQueryVariables>(FullTextSearchEntityDocument, baseOptions);
-        }
-export type FullTextSearchEntityQueryHookResult = ReturnType<typeof useFullTextSearchEntityQuery>;
-export type FullTextSearchEntityLazyQueryHookResult = ReturnType<typeof useFullTextSearchEntityLazyQuery>;
-export type FullTextSearchEntityQueryResult = ApolloReactCommon.QueryResult<FullTextSearchEntityQuery, FullTextSearchEntityQueryVariables>;
-export const GetEntityInfoDocument = gql`
-    query GetEntityInfo {
-  getEntityInfo {
-    entityName
-    events
-    creators
-    orgs
-    total
-    totalCommit
-    tagged
-  }
-}
-    `;
-
-/**
- * __useGetEntityInfoQuery__
- *
- * To run a query within a React component, call `useGetEntityInfoQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetEntityInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetEntityInfoQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetEntityInfoQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetEntityInfoQuery, GetEntityInfoQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetEntityInfoQuery, GetEntityInfoQueryVariables>(GetEntityInfoDocument, baseOptions);
-      }
-export function useGetEntityInfoLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetEntityInfoQuery, GetEntityInfoQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetEntityInfoQuery, GetEntityInfoQueryVariables>(GetEntityInfoDocument, baseOptions);
-        }
-export type GetEntityInfoQueryHookResult = ReturnType<typeof useGetEntityInfoQuery>;
-export type GetEntityInfoLazyQueryHookResult = ReturnType<typeof useGetEntityInfoLazyQuery>;
-export type GetEntityInfoQueryResult = ApolloReactCommon.QueryResult<GetEntityInfoQuery, GetEntityInfoQueryVariables>;
-export const GetNotificationDocument = gql`
-    query GetNotification($entityName: String!, $id: String!, $commitId: String!) {
-  getNotification(entityName: $entityName, id: $id, commitId: $commitId) {
-    id
-    commitId
-    entityName
-    creator
-    read
-  }
-}
-    `;
-
-/**
- * __useGetNotificationQuery__
- *
- * To run a query within a React component, call `useGetNotificationQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetNotificationQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetNotificationQuery({
- *   variables: {
- *      entityName: // value for 'entityName'
- *      id: // value for 'id'
- *      commitId: // value for 'commitId'
- *   },
- * });
- */
-export function useGetNotificationQuery(baseOptions: ApolloReactHooks.QueryHookOptions<GetNotificationQuery, GetNotificationQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetNotificationQuery, GetNotificationQueryVariables>(GetNotificationDocument, baseOptions);
-      }
-export function useGetNotificationLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetNotificationQuery, GetNotificationQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetNotificationQuery, GetNotificationQueryVariables>(GetNotificationDocument, baseOptions);
-        }
-export type GetNotificationQueryHookResult = ReturnType<typeof useGetNotificationQuery>;
-export type GetNotificationLazyQueryHookResult = ReturnType<typeof useGetNotificationLazyQuery>;
-export type GetNotificationQueryResult = ApolloReactCommon.QueryResult<GetNotificationQuery, GetNotificationQueryVariables>;
-export const GetNotificationsDocument = gql`
-    query GetNotifications {
-  getNotifications {
-    id
-    commitId
-    entityName
-    creator
-    read
-  }
-}
-    `;
-
-/**
- * __useGetNotificationsQuery__
- *
- * To run a query within a React component, call `useGetNotificationsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetNotificationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetNotificationsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetNotificationsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetNotificationsQuery, GetNotificationsQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetNotificationsQuery, GetNotificationsQueryVariables>(GetNotificationsDocument, baseOptions);
-      }
-export function useGetNotificationsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetNotificationsQuery, GetNotificationsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetNotificationsQuery, GetNotificationsQueryVariables>(GetNotificationsDocument, baseOptions);
-        }
-export type GetNotificationsQueryHookResult = ReturnType<typeof useGetNotificationsQuery>;
-export type GetNotificationsLazyQueryHookResult = ReturnType<typeof useGetNotificationsLazyQuery>;
-export type GetNotificationsQueryResult = ApolloReactCommon.QueryResult<GetNotificationsQuery, GetNotificationsQueryVariables>;
 export const LoginDocument = gql`
     mutation Login($username: String!, $password: String!) {
   login(username: $username, password: $password) {
@@ -634,42 +440,6 @@ export function useLogoutMutation(baseOptions?: ApolloReactHooks.MutationHookOpt
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = ApolloReactCommon.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = ApolloReactCommon.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
-export const MeDocument = gql`
-    query ME {
-  me {
-    id
-    username
-    email
-    is_deleted
-    is_admin
-  }
-}
-    `;
-
-/**
- * __useMeQuery__
- *
- * To run a query within a React component, call `useMeQuery` and pass it any options that fit your needs.
- * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useMeQuery({
- *   variables: {
- *   },
- * });
- */
-export function useMeQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<MeQuery, MeQueryVariables>) {
-        return ApolloReactHooks.useQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
-      }
-export function useMeLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
-        }
-export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
-export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
-export type MeQueryResult = ApolloReactCommon.QueryResult<MeQuery, MeQueryVariables>;
 export const RegisterDocument = gql`
     mutation Register($username: String!, $email: String!, $password: String!) {
   register(username: $username, email: $email, password: $password) {

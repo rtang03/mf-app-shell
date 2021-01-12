@@ -15,6 +15,7 @@ import { schema } from './schema';
 
 const authUri = process.env.AUTH_URI as string;
 const queryHanderUri = process.env.QUERYHANDLER_URI as string;
+const gatewayUri = process.env.GATEWAY_URI as string;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
@@ -28,7 +29,7 @@ const apolloServer = new ApolloServer({
     const _accessToken = authorization?.split(' ')[1];
     const accessToken = _accessToken === 'null' ? undefined : _accessToken;
 
-    return { res, accessToken, refreshToken, authUri, queryHanderUri } as ApolloContext;
+    return { res, accessToken, refreshToken, authUri, queryHanderUri, gatewayUri } as ApolloContext;
   },
 });
 
@@ -40,12 +41,19 @@ app
       process.exit(1);
     }
 
+    if (!gatewayUri) {
+      console.error('environment variable $GATEWAY_URI is empty');
+      process.exit(1);
+    }
+
     if (!queryHanderUri) {
       console.error('environment variable $QUERYHANDLER_URI is empty');
       process.exit(1);
     }
 
     console.debug(`Env - AUTH_HOST: ${authUri}`);
+    console.debug(`Env - QUERYHANDLER_HOST: ${queryHanderUri}`);
+    console.debug(`Env - GATEWAY_HOST: ${gatewayUri}`);
 
     const server = express();
     server.use(cookieParser());

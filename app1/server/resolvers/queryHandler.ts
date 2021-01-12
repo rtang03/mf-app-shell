@@ -1,6 +1,3 @@
-import util from 'util';
-import { ApolloError } from '@apollo/client';
-import { GraphQLClient } from 'graphql-request';
 import type {
   Commit,
   EntityInfo,
@@ -9,91 +6,47 @@ import type {
   PaginatedEntity,
 } from '../../graphql/generated-next-backend';
 import type { ApolloContext } from '../../types';
-import CreateCommitMutation from './queryToQueryHandler/createCommit';
-import FullTextSearchCommitQuery from './queryToQueryHandler/fullTextSearchCommit';
-import FullTextSearchEntityQuery from './queryToQueryHandler/fullTextSearchEntity';
-import GetEntityInfoQuery from './queryToQueryHandler/getEntityInfo';
-import GetNotificationQuery from './queryToQueryHandler/getNotification';
-import GetNotificationsQuery from './queryToQueryHandler/getNotifications';
-import PaginatedCommitQuery from './queryToQueryHandler/paginatedCommit';
-import PaginatedEntityQuery from './queryToQueryHandler/paginatedEntity';
+import { forwardRequest } from './forwardRequest';
+import CreateCommitMutation from './gqlQueryHandler/createCommit';
+import FullTextSearchCommitQuery from './gqlQueryHandler/fullTextSearchCommit';
+import FullTextSearchEntityQuery from './gqlQueryHandler/fullTextSearchEntity';
+import GetEntityInfoQuery from './gqlQueryHandler/getEntityInfo';
+import GetNotificationQuery from './gqlQueryHandler/getNotification';
+import GetNotificationsQuery from './gqlQueryHandler/getNotifications';
+import PaginatedCommitQuery from './gqlQueryHandler/paginatedCommit';
+import PaginatedEntityQuery from './gqlQueryHandler/paginatedEntity';
 
+type TQuery<TResult> = (root: unknown, variables: any, context: ApolloContext) => Promise<TResult>;
 type Resolvers = {
   Query: {
-    getEntityInfo: (root: unknown, variables: any, context: ApolloContext) => Promise<EntityInfo[]>;
-    fullTextSearchCommit: (
-      root: unknown,
-      variables: any,
-      context: ApolloContext
-    ) => Promise<PaginatedCommit>;
-    fullTextSearchEntity: (
-      root: unknown,
-      variables: any,
-      context: ApolloContext
-    ) => Promise<PaginatedEntity>;
-    paginatedCommit: (
-      root: unknown,
-      variables: any,
-      context: ApolloContext
-    ) => Promise<PaginatedCommit>;
-    paginatedEntity: (
-      root: unknown,
-      variables: any,
-      context: ApolloContext
-    ) => Promise<PaginatedEntity>;
-    getNotification: (
-      root: unknown,
-      variables: any,
-      context: ApolloContext
-    ) => Promise<Notification>;
-    getNotifications: (
-      root: unknown,
-      variables: any,
-      context: ApolloContext
-    ) => Promise<Notification[]>;
+    getEntityInfo: TQuery<EntityInfo[]>;
+    fullTextSearchCommit: TQuery<PaginatedCommit>;
+    fullTextSearchEntity: TQuery<PaginatedEntity>;
+    paginatedCommit: TQuery<PaginatedCommit>;
+    paginatedEntity: TQuery<PaginatedEntity>;
+    getNotification: TQuery<Notification>;
+    getNotifications: TQuery<Notification[]>;
   };
   Mutation: {
-    // ping is not required to implement in BBF
-    // reloadEntities is not require to implement in BBF
-    createCommit: (root: unknown, variables: any, context: ApolloContext) => Promise<Commit>;
+    // ping is not required to implement in next-backend
+    // reloadEntities is not require to implement in next-backend
+    createCommit: TQuery<Commit>;
   };
-};
-
-// The BackendForFrontend will forward gql request to queryHandler api
-const forwardRequest: <TResult>(option: {
-  key: string;
-  query: string;
-  variables?: any;
-  ctx: ApolloContext;
-}) => Promise<TResult> = async ({
-  key,
-  query,
-  variables,
-  ctx: { accessToken, queryHanderUri },
-}) => {
-  const client = new GraphQLClient(queryHanderUri, {
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      authorization: `bearer ${accessToken}`,
-    },
-  });
-
-  try {
-    const result = await client.request(query, variables);
-    return result?.[key];
-  } catch (e) {
-    console.error(util.format('fail to graphql.request - %s: %j', key, e));
-    return new ApolloError({ errorMessage: e.message });
-  }
 };
 
 // Note: all call to Query Handler is GQL
 const resolvers: Resolvers = {
   Query: {
     getEntityInfo: async (_, __, ctx) =>
-      forwardRequest<EntityInfo[]>({ key: 'getEntityInfo', query: GetEntityInfoQuery, ctx }),
+      forwardRequest<EntityInfo[]>({
+        target: 'queryHandler',
+        key: 'getEntityInfo',
+        query: GetEntityInfoQuery,
+        ctx,
+      }),
     fullTextSearchCommit: async (_, variables, ctx) =>
       forwardRequest<PaginatedCommit>({
+        target: 'queryHandler',
         key: 'fullTextSearchCommit',
         query: FullTextSearchCommitQuery,
         variables,
@@ -101,6 +54,7 @@ const resolvers: Resolvers = {
       }),
     fullTextSearchEntity: async (_, variables, ctx) =>
       forwardRequest<PaginatedEntity>({
+        target: 'queryHandler',
         key: 'fullTextSearchEntity',
         query: FullTextSearchEntityQuery,
         variables,
@@ -108,6 +62,7 @@ const resolvers: Resolvers = {
       }),
     paginatedCommit: async (_, variables, ctx) =>
       forwardRequest<PaginatedCommit>({
+        target: 'queryHandler',
         key: 'paginatedCommit',
         query: PaginatedCommitQuery,
         variables,
@@ -115,6 +70,7 @@ const resolvers: Resolvers = {
       }),
     paginatedEntity: async (_, variables, ctx) =>
       forwardRequest<PaginatedEntity>({
+        target: 'queryHandler',
         key: 'paginatedEntity',
         query: PaginatedEntityQuery,
         variables,
@@ -122,6 +78,7 @@ const resolvers: Resolvers = {
       }),
     getNotification: async (_, variables, ctx) =>
       forwardRequest<Notification>({
+        target: 'queryHandler',
         key: 'getNotification',
         query: GetNotificationQuery,
         variables,
@@ -129,6 +86,7 @@ const resolvers: Resolvers = {
       }),
     getNotifications: async (_, __, ctx) =>
       forwardRequest<Notification[]>({
+        target: 'queryHandler',
         key: 'getNotification',
         query: GetNotificationsQuery,
         ctx,
@@ -136,7 +94,13 @@ const resolvers: Resolvers = {
   },
   Mutation: {
     createCommit: async (_, variables, ctx) =>
-      forwardRequest<Commit>({ key: 'createCommit', query: CreateCommitMutation, variables, ctx }),
+      forwardRequest<Commit>({
+        target: 'queryHandler',
+        key: 'createCommit',
+        query: CreateCommitMutation,
+        variables,
+        ctx,
+      }),
   },
 };
 

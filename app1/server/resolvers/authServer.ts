@@ -34,7 +34,7 @@ export default {
   Query: {
     ping: async (): Promise<string> => 'pong',
     // me returns the userinfo from an authtenticated request
-    me: catchErrors<User>(
+    currentUser: catchErrors<User>(
       (_: any, ctx) => {
         if (!ctx?.accessToken) return Promise.reject(new Error('No access token'));
 

@@ -7,7 +7,7 @@ export default `
     """
     return authenticated user from auth-server
     """
-    me: User!
+    currentUser: User!
   }
 
   """

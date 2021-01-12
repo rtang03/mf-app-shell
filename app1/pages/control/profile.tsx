@@ -7,17 +7,20 @@ import Grid from '@material-ui/core/Grid';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Switch from '@material-ui/core/Switch';
 import Typography from '@material-ui/core/Typography';
-import { useDispatchAlert } from 'components';
 import Layout from 'components/Layout';
 import Wallet from 'components/Wallet';
 import withAuth from 'components/withAuth';
 import { Field, Form, Formik } from 'formik';
 import { TextField } from 'formik-material-ui';
-import { useMeQuery, useUpdateProfileMutation } from 'graphql/generated-next-backend';
 import { NextPage } from 'next';
 import React, { useState } from 'react';
-import { getValidationSchema, useStyles } from 'utils';
 import * as yup from 'yup';
+import { useDispatchAlert } from '../../components';
+import {
+  useCurrentUserQuery,
+  useUpdateProfileMutation,
+} from '../../graphql/generated-next-backend';
+import { getValidationSchema, useStyles } from '../../utils';
 
 const validationSchema = yup.object(getValidationSchema(['email']));
 const ERROR = 'Fail to update profile';
@@ -26,7 +29,7 @@ const message = 'Profile updated';
 const Profile: NextPage<any> = () => {
   const dispatchAlert = useDispatchAlert();
   const classes = useStyles();
-  const { data, error, loading, refetch } = useMeQuery();
+  const { data, error, loading, refetch } = useCurrentUserQuery();
   const [edit, setEdit] = useState(false);
   const [
     updateProfile,
@@ -36,20 +39,20 @@ const Profile: NextPage<any> = () => {
   const handleEdit = () => ({ target }: React.ChangeEvent<HTMLInputElement>) =>
     setEdit(target.checked);
 
-  if (!data?.me)
+  if (!data?.currentUser)
     return (
       <Layout title="Dashboard" loading={loading} restricted={false}>
         {error?.message}
       </Layout>
     );
 
-  const { username, email, id } = data?.me;
+  const { username, email, id } = data?.currentUser;
 
   return (
-    <Layout title="Profile" loading={loading} user={data?.me} restricted={true}>
+    <Layout title="Profile" loading={loading} user={data?.currentUser} restricted={true}>
       <Container component="main" maxWidth="sm">
         <Typography variant="h6">User profile</Typography>
-        <Typography variant="caption">Welcome! {data?.me.username}</Typography>
+        <Typography variant="caption">Welcome! {data?.currentUser.username}</Typography>
         {updatedLoaing ? <LinearProgress /> : <Divider />}
         <FormGroup row>
           <FormControlLabel

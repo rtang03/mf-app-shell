@@ -4,25 +4,27 @@ import Divider from '@material-ui/core/Divider';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography';
 import { Formik, Form } from 'formik';
-import { useGetWalletQuery, WalletEntry, useCreateWalletMutation } from 'graphql/generated-next-backend/gateway';
 import React from 'react';
 import { useStyles } from 'utils';
+import {
+  useGetWalletQuery,
+  WalletEntry,
+  useCreateWalletMutation,
+} from '../graphql/generated-gateway';
 import { useDispatchAlert } from './AlertProvider';
 
-const options = { context: { backend: 'gateway' } };
 const ERROR = 'Fail to create wallet';
 const message = 'Digital wallet created';
 
 const Wallet: React.FC<any> = () => {
   const dispatchAlert = useDispatchAlert();
   const { data, loading, error, refetch } = useGetWalletQuery({
-    ...options,
     fetchPolicy: 'cache-and-network',
   });
   const [
     create,
     { data: dataCreate, loading: createLoading, error: createError },
-  ] = useCreateWalletMutation(options);
+  ] = useCreateWalletMutation();
   const wallet = data?.getWallet as WalletEntry;
   const classes = useStyles();
 

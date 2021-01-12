@@ -3,7 +3,7 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import Layout from 'components/Layout';
 import RemoteComponent from 'components/RemoteComponent';
 import withAuth from 'components/withAuth';
-import { useMeQuery } from 'graphql/generated-next-backend/next-backend';
+import { useCurrentUserQuery } from 'graphql/generated-next-backend/next-backend';
 import { NextPage } from 'next';
 import React from 'react';
 import { useApolloWithAuth } from 'utils';
@@ -28,16 +28,16 @@ Order of <style />
 const AppendToggleButtonStyleTag = withStyles({ root: { visibility: 'hidden' } })(ToggleButton);
 
 const Dashboard: NextPage<any> = (props) => {
-  const { data, error, loading } = useMeQuery();
+  const { data, error, loading } = useCurrentUserQuery();
   const apolloClient = useApolloWithAuth(props?.initialApolloState);
   const url = process.env.NEXT_PUBLIC_MF_GATEWAY || '';
 
-  return !data?.me ? (
+  return !data?.currentUser ? (
     <Layout title="Dashboard" loading={loading} user={null} restricted={false}>
       {error?.message}
     </Layout>
   ) : (
-    <Layout title="Dashboard" loading={loading} user={data?.me} restricted={true}>
+    <Layout title="Dashboard" loading={loading} user={data?.currentUser} restricted={true}>
       <AppendToggleButtonStyleTag value="nil">nil</AppendToggleButtonStyleTag>
       <div>
         <RemoteComponent
