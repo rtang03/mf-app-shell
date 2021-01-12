@@ -5,25 +5,26 @@ import FindInPageIcon from '@material-ui/icons/FindInPage';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import React, { useState } from 'react';
-import { useMeQuery } from '../graphql/generated-nextjs-backend';
+import { useCurrentUserQuery } from '../graphql/generated-next-backend';
 import FullTextSearch from './FullTextSearch';
 import Metrics from './Metrics';
 
 const Dashboard: (option: { debug?: boolean }) => JSX.Element = ({ debug = false }) => {
-  // query /control/api/graphql
-  const { data, error, loading } = useMeQuery();
+  // Note: useCurrentUserQuery comes from generated-next-backend
+  // Only after running "yarn dev", next backend server start; then run "yarn gen-hook:next" to generate this hook
+  const { data, error, loading } = useCurrentUserQuery();
 
   // Toggle Button
   const [selection, setSelection] = useState('metrics');
   const handleSelection = (event: React.MouseEvent<HTMLElement>, item: string) =>
     setSelection(item);
 
-  if (!data?.me && !loading) {
+  if (!data?.currentUser && !loading) {
     console.error(error?.message);
     return <div>Error in page</div>;
   }
 
-  debug && console.log('[debug] meQuery return:', data?.me);
+  debug && console.log('[debug] meQuery return:', data?.currentUser);
 
   return (
     <Container>

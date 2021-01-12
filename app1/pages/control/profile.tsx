@@ -13,7 +13,7 @@ import Wallet from 'components/Wallet';
 import withAuth from 'components/withAuth';
 import { Field, Form, Formik } from 'formik';
 import { TextField } from 'formik-material-ui';
-import { useMeQuery, useUpdateProfileMutation } from 'graphql/generated';
+import { useMeQuery, useUpdateProfileMutation } from 'graphql/generated-next-backend';
 import { NextPage } from 'next';
 import React, { useState } from 'react';
 import { getValidationSchema, useStyles } from 'utils';

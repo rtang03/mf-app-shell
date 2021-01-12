@@ -9,7 +9,7 @@ export const typeDefs = gql`
   }
 
   type Query {
-    me: User!
+    currentUser: User!
     getEntityInfo: [EntityInfo!]!
     fullTextSearchCommit(query: String!, cursor: Int, pagesize: Int): PaginatedCommit!
     fullTextSearchEntity(query: String!, cursor: Int, pagesize: Int): PaginatedEntity!

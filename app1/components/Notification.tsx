@@ -11,7 +11,7 @@ import {
   useGetNotificationsQuery,
   useGetNotificationLazyQuery,
   Notification,
-} from '../graphql/generated';
+} from '../graphql/generated-next-backend';
 
 const ITEM_HEIGHT = 48;
 

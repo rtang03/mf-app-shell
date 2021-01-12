@@ -3,8 +3,8 @@ hooks:
   afterAllFileWrite:
     - tslint --fix
 generates:
-  graphql/generated-nextjs-backend/nextjs-backend.tsx:
-    documents: 'graphql/nextjs-backend/*.graphql'
+  graphql/generated-next-backend/next-backend.tsx:
+    documents: 'graphql/next-backend/*.graphql'
     schema: 'http://localhost:3101/control/api/graphql'
     plugins:
       - 'typescript'

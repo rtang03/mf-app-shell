@@ -1,6 +1,6 @@
 import Layout from 'components/Layout';
 import withAuthAsync from 'components/withAuth';
-import { useMeQuery } from 'graphql/generated';
+import { useMeQuery } from 'graphql/generated-next-backend';
 import { NextPage } from 'next';
 import Router from 'next/router';
 import React, { useEffect } from 'react';

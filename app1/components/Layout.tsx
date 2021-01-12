@@ -15,7 +15,7 @@ import Link from 'next/link';
 import Router from 'next/router';
 import React, { useCallback, useEffect, useState, MouseEvent } from 'react';
 import { User } from 'types';
-import { useLogoutMutation } from '../graphql/generated';
+import { useLogoutMutation } from '../graphql/generated-next-backend';
 import { tokenStore, useStyles } from '../utils';
 import { useAlert, useDispatchAlert } from './AlertProvider';
 import { useDispatchAuth } from './AuthProvider';

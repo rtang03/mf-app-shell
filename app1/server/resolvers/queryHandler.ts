@@ -7,7 +7,7 @@ import type {
   Notification,
   PaginatedCommit,
   PaginatedEntity,
-} from '../../graphql/generated';
+} from '../../graphql/generated-next-backend';
 import type { ApolloContext } from '../../types';
 import CreateCommitMutation from './queryToQueryHandler/createCommit';
 import FullTextSearchCommitQuery from './queryToQueryHandler/fullTextSearchCommit';

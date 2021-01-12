@@ -3,7 +3,7 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import Layout from 'components/Layout';
 import RemoteComponent from 'components/RemoteComponent';
 import withAuth from 'components/withAuth';
-import { useMeQuery } from 'graphql/generated/ui-control';
+import { useMeQuery } from 'graphql/generated-next-backend/next-backend';
 import { NextPage } from 'next';
 import React from 'react';
 import { useApolloWithAuth } from 'utils';

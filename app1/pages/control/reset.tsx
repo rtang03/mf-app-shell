@@ -6,7 +6,7 @@ import { useDispatchAlert } from 'components';
 import Layout from 'components/Layout';
 import { Field, Form, Formik } from 'formik';
 import { TextField } from 'formik-material-ui';
-import { useResetMutation } from 'graphql/generated';
+import { useResetMutation } from 'graphql/generated-next-backend';
 import { NextPage } from 'next';
 import Router from 'next/router';
 import React, { useEffect } from 'react';

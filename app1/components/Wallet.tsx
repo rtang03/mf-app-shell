@@ -4,7 +4,7 @@ import Divider from '@material-ui/core/Divider';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography';
 import { Formik, Form } from 'formik';
-import { useGetWalletQuery, WalletEntry, useCreateWalletMutation } from 'graphql/generated/gateway';
+import { useGetWalletQuery, WalletEntry, useCreateWalletMutation } from 'graphql/generated-next-backend/gateway';
 import React from 'react';
 import { useStyles } from 'utils';
 import { useDispatchAlert } from './AlertProvider';

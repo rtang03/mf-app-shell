@@ -1,5 +1,5 @@
-query ME {
-  me {
+query CurrentUser {
+  currentUser {
     id
     username
     email

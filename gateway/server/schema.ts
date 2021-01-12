@@ -48,7 +48,7 @@ export const resolvers = {
   Query: {
     // Dev purpose: return authenticated user object. The authentication is made via app-shell.
     // Below is the mocked api.
-    me: () =>
+    currentUser: () =>
       Promise.resolve({
         id: '123456',
         username: 'user1',
