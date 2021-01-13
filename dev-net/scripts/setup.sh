@@ -28,14 +28,6 @@ export LOG_TARGET=console
 export LIBS_DIR=$ROOT_DIR/node_modules
 export CONF_DIR=$CURRENT_DIR/build.
 
-export NGX_TEMPLATE_A_U_G=./scripts/nginx/auth-ui-gw.template
-export NGX_TEMPLATE_A_U=./scripts/nginx/auth-ui.template
-export NGX_TEMPLATE_A=./scripts/nginx/auth.template
-
-export COMPOSE_1_NGX="-f compose.1org.ngx.yaml"
-export COMPOSE_2_NGX="$COMPOSE_1_NGX -f compose.2org.ngx.yaml"
-export COMPOSE_3_NGX="$COMPOSE_2_NGX -f compose.3org.ngx.yaml"
-
 export COMPOSE_0_S="-f compose.1org.db-red.yaml"
 export CMP_2_SRV="$COMPOSE_0_S -f compose.2org.db-red.yaml"
 export CMP_3_SRV="$CMP_2_SRV -f compose.3org.db-red.yaml"
@@ -72,24 +64,15 @@ export COMPOSE_1_S_A_G="$COMPOSE_1_S_A $CMP_1_GWY"
 
 export COMPOSE_2_S="$COMPOSE_2 $CMP_2_SRV"
 export COMPOSE_2_S_A="$COMPOSE_2_S $CMP_2_ATH"
-export COMPOSE_2_S_A_U="$COMPOSE_2_S_A $CMP_2_UIA"
-export COMPOSE_2_S_A_U_G="$COMPOSE_2_S_A_U $CMP_2_GWY"
 export COMPOSE_2_S_A_G="$COMPOSE_2_S_A $CMP_2_GWY"
+# Note that currently only one UI is required; hence it is CMP_1_UIA
+export COMPOSE_2_S_A_G_U="$COMPOSE_2_S_A_G $CMP_1_UIA"
 export COMPOSE_2_S_A_G_T="$COMPOSE_2_S_A_G -f compose.2org.gwtest.yaml"
 export COMPOSE_2_S_A_R="$COMPOSE_2_S_A $CMP_2_RLY"
 
 export COMPOSE_2_S_A_G="$COMPOSE_2_S_A $CMP_2_GWY"
 
-export COMPOSE_3_S="$COMPOSE_3 $CMP_3_SRV"
-export COMPOSE_3_S_A="$COMPOSE_3_S $CMP_3_ATH"
-export COMPOSE_3_S_A_U="$COMPOSE_3_S_A $CMP_3_UIA"
-export COMPOSE_3_S_A_U_G="$COMPOSE_3_S_A_U $CMP_3_GWY"
-export COMPOSE_3_S_A_G="$COMPOSE_3_S_A $CMP_3_GWY"
-export COMPOSE_3_S_A_G_T="$COMPOSE_3_S_A_G -f compose.3org.gwtest.yaml"
-export COMPOSE_3_S_A_R="$COMPOSE_3_S_A $CMP_3_RLY"
-export COMPOSE_3_S_A_R_T="$COMPOSE_3_S_A_R $CMP_RTEST"
-
-export COMPOSE_ALL="$COMPOSE_2_S_A_G $CMP_1_CC $CMP_2_CC"
+export COMPOSE_ALL="$COMPOSE_2_S_A_G_U $CMP_1_CC $CMP_2_CC"
 
 # $1 - message to be printed
 # $2 - exit code of the previous operation

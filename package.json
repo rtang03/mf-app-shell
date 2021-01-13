@@ -1,6 +1,27 @@
 {
   "name": "mf-app-shell",
-  "version": "1.0.0",
+  "version": "0.0.1",
+  "license": "BSD-3-Clause-Clear",
+  "description": "User interface",
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com/rtang03/mf-app-shell.git"
+  },
+  "keywords": [
+    "webpack",
+    "jest",
+    "next",
+    "material-ui",
+    "apollo-client",
+    "eslint",
+    "lerna",
+    "jss"
+  ],
+  "author": "Ross Tang",
+  "homepage": "https://github.com/rtang03/mf-app-shell",
+  "bugs": {
+    "url": "https://github.com/rtang03/mf-app-shell/issues"
+  },
   "private": true,
   "scripts": {
     "start": "lerna run --stream --scope @microfrontend/* --parallel start",

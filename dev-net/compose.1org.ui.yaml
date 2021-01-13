@@ -4,17 +4,26 @@ networks:
   openplatform:
 
 services:
-  ui-control1:
-    image: $UI_CONTROL_IMAGE-org1:$RELEASE
-    container_name: ui-control1
+  mf-shell:
+    image: $MF_SHELL_IMAGE
+    container_name: mf-shell
     environment:
-#      - HOST=localhost
       - PORT=3000
-      - AUTH_HOST=http://auth-server1:8080
-#      - GW_ORG_INTERNAL_HOST=http://gw-org1:4001
-      - GW_ORG_EXTERNAL_HOST=http://localhost:4001
-      - QH_EXTERNAL_HOST=http://localhost:5001/graphql
+      - AUTH_URI=http://auth-server1:8080
+      - GATEWAY_URI=http://gw-org1:4001/graphql
+      - QUERYHANDLER_URI=http://gw-org1:5001/graphql
+    ports:
+      - 3000:3000
     networks:
       - openplatform
     depends_on:
-      - auth-server1
+      - mf-gateway
+  mf-gateway:
+    image: $MF_GATEWAY_IMAGE
+    container_name: mf-gateway
+    ports:
+      - 8082:8082
+    networks:
+      - openplatform
+    depends_on:
+      - gw-org1

@@ -1,0 +1,17 @@
+*
+!.env.local.prod
+!.env.prod
+!next.config.js
+!next-env.d.ts
+!global.d.ts
+!package.json
+!package-lock.json
+!tsconfig.server.json
+!tsconfig.json
+!components
+!graphql
+!pages
+!public
+!server
+!types
+!utils
