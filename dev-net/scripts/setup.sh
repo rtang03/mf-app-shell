@@ -15,10 +15,12 @@ export CURRENT_DIR=`pwd`
 export AUTH_IMAGE=ghcr.io/rtang03/auth-server:0.0.2
 export PROXY_IMAGE=fabric-es/proxy:${RELEASE}
 export UI_CONTROL_IMAGE=fabric-es/ui-control
-export ROOT_DIR=$CURRENT_DIR/../..
+export ROOT_DIR=$CURRENT_DIR/..
 export CC_IMAGE=ghcr.io/rtang03/eventstore-cc:0.0.3
 export GW1_IMAGE=ghcr.io/rtang03/gw-org1:0.7.1
 export GW2_IMAGE=ghcr.io/rtang03/gw-org2:0.7.1
+export MF_GATEWAY_IMAGE=fabric-es/mf-gateway
+export MF_SHELL_IMAGE=fabric-es/mf-shell
 
 export LOG_LEVEL=info
 export LOG_TARGET=console

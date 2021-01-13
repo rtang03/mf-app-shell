@@ -11,7 +11,7 @@
     "format": "prettier --write .",
     "lint": "eslint . --ext ts --ext tsx --ext js",
     "test": "jest",
-    "test-all": "yarn lint && yarn type-check && yarn test",
+    "test-all": "npm lint && npm type-check && npm test",
     "gen-hook:next": "graphql-codegen --config graphql/generated-next-backend/next-backend.codegen.yml",
     "gen-hook:qh": "graphql-codegen --config graphql/generated-queryHandler/queryHandler.codegen.yml",
     "gen-hook:gw": "graphql-codegen --config graphql/generated-gateway/gateway.codegen.yml"
@@ -55,7 +55,7 @@
     "@graphql-codegen/typescript-resolvers": "^1.18.1",
     "@types/body-parser": "^1.19.0",
     "@types/dotenv": "^8.2.0",
-    "@types/express": "^4.17.9",
+    "@types/express": "4.17.7",
     "@testing-library/react": "^11.2.2",
     "@types/cookie-parser": "^1.4.2",
     "@types/csurf": "^1.11.0",

@@ -1,5 +1,4 @@
 artifacts/
 *.block
 volume/
-.env
 config/configtx.yaml
