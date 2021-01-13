@@ -34,5 +34,10 @@ printMessage "docker-compose up $COMPOSE_2_S_A_G" $?
 containerWait "gw-org1" "gateway ready at"
 containerWait "gw-org2" "gateway ready at"
 
+# STEP 4
+docker-compose $COMPOSE_2_S_A_G_U up -d --no-recreate
+printMessage "docker-compose up $COMPOSE_2_S_A_G_U" $?
+containerWait "mf-shell" "Server listening at"
+
 duration=$SECONDS
 printf "${GREEN}$(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed.\n\n${NC}"
