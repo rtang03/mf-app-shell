@@ -12,7 +12,7 @@ This will bump version, create version tag, and push to origin in go.
 npm config set sign-git-tag true
 
 # increment version
-npm version patch
+lerna version patch
 ```
 
 Method 1 will update `lerna.json` and related packages' version automatically. Therefore, cannot not run repeatedly 
