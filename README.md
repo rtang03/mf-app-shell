@@ -1,7 +1,6 @@
 ![Release](https://github.com/rtang03/mf-app-shell/workflows/Release/badge.svg)
 ![Build](https://github.com/rtang03/mf-app-shell/workflows/Build/badge.svg)
-![GitHub package.json version](https://img.shields.io/github/package-json/v/rtang03/mf-app-shell)
-[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
+![Github lerna version](https://img.shields.io/github/lerna-json/v/rtang03/mf-app-shell)
 
 ## Micro-frontend App-shell for fabric-es
 

@@ -39,9 +39,9 @@ jobs:
       - name: tsc compile
         run: npm run build
       - name: build micro-frontend Gateway image
-        run: cd dev-net && ./dn-mf-gateway.sh
+        run: cd dev-net && ./build-mf-gateway.sh
       - name: build micro-frontend App-shell image
-        run: cd dev-net && ./dn-app-shell.sh
+        run: cd dev-net && ./build-app-shell.sh
       - name: deploy base 2-org fabric v2.x network
         run: cd dev-net && sudo ./dn-run.2-db-red-auth-gw-ui.sh
       ## TODO: more e2e tests add here
