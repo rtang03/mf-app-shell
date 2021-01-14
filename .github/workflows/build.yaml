@@ -43,18 +43,13 @@ jobs:
         run: cd gateway/sidecar && npm install
       - name: lint all
         run: npm run lint
-      - name: jest - gateway
-        run: cd gateway && npm run test
       - name: tsc compile
         run: npm run build
-      - name: build micro-frontend Gateway image
-        run: cd dev-net && ./dn-mf-gateway.sh
-      - name: build micro-frontend Gateway image
-        run: cd dev-net && ./dn-app-shell.sh
       - name: deploy base 2-org fabric v2.x network
-        run: cd dev-net && sudo ./dn-run.2-db-red-auth-gw-ui.sh
-      - name: Run unit tests for app-shell
-        run: sudo npm run unit-test:fab
+        run: cd dev-net && sudo ./dn-run.2-db-red-auth-gw.sh
+      ## TODO: more unit tests add here
+      - name: jest - gateway
+        run: cd gateway && npm run test
       - name: clean-up artifacts
         run: sudo rm -rf dev-net/artifacts
       - name: clean-up volume
