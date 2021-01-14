@@ -27,8 +27,6 @@
     "start": "lerna run --stream --scope @microfrontend/* --parallel start",
     "build": "lerna run --stream --scope @microfrontend/* build",
     "lint": "lerna run --stream --scope @microfrontend/* lint",
-    "sidecar:build": "lerna run --stream --scope @microfrontend/* sidecar:build",
-    "sidecar:start": "lerna run --stream --scope @microfrontend/* sidecar:start",
     "clean": "lerna run --stream --scope @microfrontend/* --parallel clean"
   },
   "devDependencies": {

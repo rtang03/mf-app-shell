@@ -1,0 +1,61 @@
+on:
+  pull_request:
+    branches: [ main ]
+
+name: Build
+
+env:
+  APP_SHELL_IMAGE: mf-shell
+  MF_GATEWAY_IMAGE: mf-gateway
+
+jobs:
+  build:
+    name: CI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+            - name: Setup Node.js for use with action
+            env:
+            ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+            uses: actions/setup-node@v2
+            with:
+            node-version: '14.15.4'
+            check-latest: true
+      - name: Setup Node.js for use with action
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: '14.15.4'
+          check-latest: true
+      - name: npm install - project root
+        run: npm install
+      - name: npm install - app shell
+        run: cd app-shell && npm install
+      - name: npm install - gateway
+        run: cd gateway && npm install
+      - name: npm install - gateway sidecar
+        run: cd gateway/sidecar && npm install
+      - name: lint all
+        run: npm run lint
+      - name: jest - gateway
+        run: cd gateway && npm run test
+      - name: tsc compile
+        run: npm run build
+      - name: build micro-frontend Gateway image
+        run: cd dev-net && ./dn-mf-gateway.sh
+      - name: build micro-frontend Gateway image
+        run: cd dev-net && ./dn-app-shell.sh
+      - name: deploy base 2-org fabric v2.x network
+        run: cd dev-net && sudo ./dn-run.2-db-red-auth-gw-ui.sh
+      - name: Run unit tests for app-shell
+        run: sudo npm run unit-test:fab
+      - name: clean-up artifacts
+        run: sudo rm -rf dev-net/artifacts
+      - name: clean-up volume
+        run: sudo rm -rf dev-net/volume

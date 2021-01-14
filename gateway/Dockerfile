@@ -9,7 +9,7 @@ RUN npm i \
   && npm i --only=production \
   && cp -R node_modules prod_node_modules \
   && npm i \
-  && npm run build \
+  && npm run build:prod \
   && mkdir -p output \
   && cp package.json package-lock.json output \
   && mv prod_node_modules output/node_modules \

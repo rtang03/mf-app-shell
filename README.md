@@ -1,3 +1,6 @@
+![GitHub package.json version](https://img.shields.io/github/package-json/v/rtang03/mf-app-shell)
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
+
 ## Micro-frontend App-shell for fabric-es
 
 This is a sample web application for "fabric-es" project in micro-frontend architecture. This sample application
@@ -39,6 +42,7 @@ Bootstrap the 2-org fabric network, with 2 gw-org.
 
 ```shell
 # at dev-net
+# It deploys the dev-net for developing web UI
 ./dn-run.2-db-red-auth-gw.sh
 
 # at root
@@ -97,7 +101,7 @@ npm run dev
 
 ### Dockerize
 
-You may test the deployment, after finishing development. Notice that when running `./build-app-shell.sh`, or
+After finishing development, you may test the deployment, after finishing development. Notice that when running `./build-app-shell.sh`, or
 `./build-mf-gateway.sh`, `./dn-run.2-db-red-auth-gw-ui.sh`, it will run `./cleanup.sh` at the beginning.
 Previously persistence information in the dev-net will be gone.
 
@@ -109,7 +113,7 @@ Previously persistence information in the dev-net will be gone.
 # build microfrontend gateway
 ./build-mf-gateway.sh
 
-# run everything in one go
+# run EVERYTHING in one go
 ./dn-run.2-db-red-auth-gw-ui.sh
 ```
 
@@ -127,7 +131,7 @@ As the author of Module Federation, "Zack Jackson" points out that current versi
 The Module Federation is webpack v5 feature. To workaround, here adopts the sidecar pattern to build the "remoteService"
 from the Next project. Whenever, Next upgrades to webpack v5, the sidecar can be removed.
 
-### Reference info
+### Reference info / sample codes
 
 - [webpack module federation](https://webpack.js.org/concepts/module-federation/)
 - [mfe introduction](https://medium.com/@ScriptedAlchemy/micro-fe-architecture-webpack-5-module-federation-and-custom-startup-code-9cb3fcd066c)

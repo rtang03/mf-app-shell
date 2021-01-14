@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "build": "rimraf dist && webpack --mode development",
+    "build:prod": "rimraf dist && webpack --mode production",
     "start": "cd dist && PORT=8082 servor"
   },
   "devDependencies": {
