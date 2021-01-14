@@ -49,7 +49,6 @@ jobs:
         run: echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
       - name: Push app-shell image to GitHub Container Registry
         run: |
-          docker images
           IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$APP_SHELL_IMAGE
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
@@ -65,7 +64,6 @@ jobs:
           docker push $IMAGE_ID:$VERSION
       - name: Push gateway image to GitHub Container Registry
         run: |
-          docker images
           IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$MF_GATEWAY_IMAGE
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')

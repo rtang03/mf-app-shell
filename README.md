@@ -1,4 +1,4 @@
-![Release](https://github.com/rtang03/mf-app-shell/workflows/Release/badge.svg)
+![Create Release](https://github.com/rtang03/mf-app-shell/workflows/Create%20Release/badge.svg)
 ![Build](https://github.com/rtang03/mf-app-shell/workflows/Build/badge.svg)
 ![Github lerna version](https://img.shields.io/github/lerna-json/v/rtang03/mf-app-shell)
 
