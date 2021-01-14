@@ -1,0 +1,94 @@
+name: Create Release
+on:
+  push:
+    tags:
+      - 'v*'
+    paths-ignore:
+      - '**.md'
+
+env:
+  APP_SHELL_IMAGE: mf-shell
+  MF_GATEWAY_IMAGE: mf-gateway
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+            - name: Setup Node.js for use with action
+              uses: actions/setup-node@v2
+              with:
+                node-version: '14.15.4'
+                check-latest: true
+      - name: npm install - project root
+        run: npm install
+      - name: npm install - app shell
+        run: cd app-shell && npm install
+      - name: npm install - gateway
+        run: cd gateway && npm install
+      - name: npm install - gateway sidecar
+        run: cd gateway/sidecar && npm install
+      - name: tsc compile
+        run: npm run build
+      - name: build micro-frontend Gateway image
+        run: cd dev-net && ./dn-mf-gateway.sh
+      - name: build micro-frontend App-shell image
+        run: cd dev-net && ./dn-app-shell.sh
+      - name: deploy base 2-org fabric v2.x network
+        run: cd dev-net && sudo ./dn-run.2-db-red-auth-gw-ui.sh
+      ## TODO: more e2e tests add here
+      - name: Log into GitHub Container Registry
+        run: echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Push app-shell image to GitHub Container Registry
+        run: |
+          docker images
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$APP_SHELL_IMAGE
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "$default-branch" ] && VERSION=latest
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag fabric-es/$APP_SHELL_IMAGE $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+      - name: Push gateway image to GitHub Container Registry
+        run: |
+          docker images
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$MF_GATEWAY_IMAGE
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "$default-branch" ] && VERSION=latest
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag fabric-es/$MF_GATEWAY_IMAGE $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+      - name: Cleanup artifacts
+        run: sudo rm -rf dev-net/artifacts
+      - name: Cleanup data volume
+        run: sudo rm -rf dev-net/volume
+      - name: Create Release
+        uses: docker://antonyurchenko/git-release:latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DRAFT_RELEASE: "false"
+          PRE_RELEASE: "true"
+          CHANGELOG_FILE: "none"
+          ALLOW_EMPTY_CHANGELOG: "true"
+          ALLOW_TAG_PREFIX: "true"

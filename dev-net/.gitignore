@@ -1,0 +1,4 @@
+artifacts/
+*.block
+volume/
+config/configtx.yaml

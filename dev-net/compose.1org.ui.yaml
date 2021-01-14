@@ -1,0 +1,29 @@
+version: '2'
+
+networks:
+  openplatform:
+
+services:
+  mf-shell:
+    image: $MF_SHELL_IMAGE
+    container_name: mf-shell
+    environment:
+      - PORT=3000
+      - AUTH_URI=http://auth-server1:8080
+      - GATEWAY_URI=http://gw-org1:4001/graphql
+      - QUERYHANDLER_URI=http://gw-org1:5001/graphql
+    ports:
+      - 3000:3000
+    networks:
+      - openplatform
+    depends_on:
+      - mf-gateway
+  mf-gateway:
+    image: $MF_GATEWAY_IMAGE
+    container_name: mf-gateway
+    ports:
+      - 8082:8082
+    networks:
+      - openplatform
+    depends_on:
+      - gw-org1

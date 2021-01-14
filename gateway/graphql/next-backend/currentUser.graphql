@@ -1,0 +1,9 @@
+query CurrentUser {
+  currentUser {
+    id
+    username
+    email
+    is_deleted
+    is_admin
+  }
+}

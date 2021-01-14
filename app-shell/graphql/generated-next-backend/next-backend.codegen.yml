@@ -1,0 +1,21 @@
+overwrite: true
+hooks:
+  afterAllFileWrite:
+    - tslint --fix
+generates:
+  graphql/generated-next-backend/next-backend.tsx:
+    documents: 'graphql/next-backend/*.graphql'
+    schema: 'http://localhost:3000/control/api/graphql'
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+    config:
+      withHOC: false
+      withComponent: false
+      withHooks: true
+      reactApolloVersion: 3
+      skipTypename: true
+      apolloReactCommonImportFrom: '@apollo/client'
+      apolloReactHooksImportFrom: '@apollo/client'
+
