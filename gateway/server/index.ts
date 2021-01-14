@@ -3,7 +3,6 @@ import http from 'http';
 import process from 'process';
 import util from 'util';
 import { ApolloServer } from 'apollo-server-express';
-import errorHandler from 'errorhandler';
 import express from 'express';
 import next from 'next';
 import { schema } from './schema';
@@ -20,7 +19,6 @@ app
     const server = express();
     server.use(express.json());
     server.use(express.urlencoded({ extended: false }));
-    server.use(errorHandler());
 
     apolloServer.applyMiddleware({ app: server, path: '/control/api/graphql' });
 
